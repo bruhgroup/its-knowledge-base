@@ -22,9 +22,13 @@ function extract_text(fileName) {
 }
 
 const files = fs.readdirSync(path);
+console.log(`Reading ${files.length} files...`);
 for (const fileName of files) {
+    if (fileName === ".gitkeep") continue;
+
     const data = extract_text(fileName);
     if (!data) continue;
+
     const {id, ...rest} = data;
     fs.writeFile(`../resources/json/${id}.json`, JSON.stringify({...rest}), (err) => {
         if (err) console.log(err);
