@@ -34,7 +34,7 @@ for (const fileName of files) {
     jsons[id] = rest;
 }
 
-fs.writeFile(`../resources/json/data.json`, JSON.stringify(jsons), (err) => {
+fs.writeFile(`../resources/json/data.json`, JSON.stringify(jsons, null, 2), (err) => {
     if (err) console.log(err);
-    else console.log(`wrote ${jsons.length} data`)
+    else console.log(`wrote ${Object.keys(jsons).length} data`)
 });
