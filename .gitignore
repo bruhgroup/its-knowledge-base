@@ -2,3 +2,4 @@
 **/node_modules
 resources/html
 resources/json
+**/*/data.json
