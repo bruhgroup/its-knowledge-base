@@ -19,8 +19,8 @@ export default function Chatbox() {
                 <div className={"text-small font-bold"}>Need help?</div>
                 <form onSubmit={handleSubmit}>
                     <Textarea
+                        variant={"bordered"}
                         placeholder={"Ask a question"}
-                        className={"max-w-xs"}
                         onChange={(e) => setQuestion(e.target.value)}
                     />
                     <Button disableRipple className={"w-full"} startContent={<FaPaperPlane/>}
