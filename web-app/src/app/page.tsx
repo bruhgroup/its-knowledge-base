@@ -13,7 +13,7 @@ export default function Home() {
         <main className={"relative p-3"}>
             <AccordionList data={askus}/>
             <div className={"fixed bottom-5 right-5"}>
-                <Popover placement={"bottom"} offset={10}>
+                <Popover placement={"bottom"} offset={10} backdrop={"opaque"}>
                     <PopoverTrigger>
                         <Button disableRipple startContent={<FaMessage/>}>Message Chatbot</Button>
                     </PopoverTrigger>
