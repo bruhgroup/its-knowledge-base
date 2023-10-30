@@ -38,8 +38,9 @@ def get_response(msg):
 
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
+    print(prob.item())
     if prob.item() > 0.5:
-        for intent in intents:
+        for intent, question in intents:
             if tag == intent:
                 return random.choice(intent['answer'])
     return "I do not understand..."
