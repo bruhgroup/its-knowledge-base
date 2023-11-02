@@ -8,6 +8,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "html-entities": "^2.4.0",
     "node-html-parser": "^6.1.10"
   }
 }
