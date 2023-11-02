@@ -1,5 +1,6 @@
 import fs from 'fs';
 import {parse} from "node-html-parser";
+import {decode} from "html-entities";
 
 const path = "../resources/html/";
 
@@ -7,18 +8,28 @@ function extract_text(fileName) {
     const file = fs.readFileSync(`${path}${fileName}`);
     const parsed = parse(file.toString());
 
-    let question = parsed.querySelector("#kb_article_question");
-    let answer = parsed.querySelector("#kb_article_text");
+    const question = parsed.querySelector("#kb_article_question");
+    const answer = parsed.querySelector("#kb_article_text");
 
     if (!question || !answer) {
         console.error(`missing data for ${fileName}`, {question, answer})
         return null;
     }
 
-    question = question.rawText.trim();
-    answer = answer.rawText.trim();
+    return {
+        id: fileName.slice(0, -5),
+        question: clean_text(question.rawText),
+        answer: clean_text(answer.rawText),
+    };
+}
 
-    return {id: fileName.slice(0, -5), question, answer};
+function clean_text(string) {
+    let cleaned = string
+        .replace(/&nbsp;/g, " ") // remove non-breaking spaces
+        .replace(/\s\s+/g, (s) => s.length > 2 ? "\n" : " ") // replace with newline or single space
+        .trim() // remove leading/trailing whitespaces
+    cleaned = decode(cleaned); // convert html entities to actual symbol
+    return cleaned;
 }
 
 const files = fs.readdirSync(path);
