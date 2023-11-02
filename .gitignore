@@ -3,3 +3,4 @@
 resources/html
 resources/json
 **/*/data.json
+/nlpTesting/cache
