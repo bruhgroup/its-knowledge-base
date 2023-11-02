@@ -13,25 +13,23 @@ from langchain.globals import set_verbose
 set_debug(True)
 set_verbose(True)
 
-MODEL_FILEPATH = "C:\\Users\\Vince\\AppData\\Local\\nomic.ai\\GPT4All\\mistral-7b-openorca.Q4_0.gguf.bin"
+MODEL_FILEPATH = "../resources/models/mistral-7b-openorca.Q4_0.gguf"
 
-template = """ You are a chatbot. You are assisting a human with a question. 
-{context}
-The human says, {question}"""
+template = """You are a chatbot. You are assisting a human with a question. 
+Human asks: {question}. 
+Context: {context}"""
 prompt = PromptTemplate.from_template(template)
 
-model = GPT4All(model=MODEL_FILEPATH, n_threads=8)
+model = GPT4All(model=MODEL_FILEPATH, n_threads=8, device="gpu")
 
 text_splitter = CharacterTextSplitter(
-    separator="\n\n",
-    chunk_size=1000,
+    separator="\n",
+    chunk_size=1200,
     chunk_overlap=200,
-    length_function=len,
-    is_separator_regex=False,
 )
 
 underlying_embeddings = GPT4AllEmbeddings()
-fs = LocalFileStore("./cache/")
+fs = LocalFileStore("./cache")
 cached_embedder = CacheBackedEmbeddings.from_bytes_store(
     underlying_embeddings, fs
 )
@@ -43,9 +41,10 @@ query = "How do i reset my password?"
 retriever = vectorstore.as_retriever(search_kwargs={"k": 1})
 
 chain = (
-    {"context": retriever, "question": RunnablePassthrough()}
-    | prompt
-    | model
-    | StrOutputParser()
+        {"context": retriever, "question": RunnablePassthrough()}
+        | prompt
+        | model
+        | StrOutputParser()
 )
+
 print(chain.invoke(query))
