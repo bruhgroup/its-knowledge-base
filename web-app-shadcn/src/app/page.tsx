@@ -13,7 +13,8 @@ export default function Home() {
                         <AccordionItem key={index} value={`question-${id}`}>
                             <AccordionTrigger>Question {id} - {askus[id].question}</AccordionTrigger>
                             <AccordionContent>{askus[id].answer}</AccordionContent>
-                        </AccordionItem>)
+                        </AccordionItem>
+                    )
                 })}
             </Accordion>
         </main>

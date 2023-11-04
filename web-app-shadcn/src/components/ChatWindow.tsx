@@ -1,29 +1,51 @@
 "use client"
 
-import React, {useState} from 'react';
-import {Textarea} from "@/components/ui/textarea";
-import {Button} from "@/components/ui/button";
+import {zodResolver} from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import * as z from "zod"
 
-export default function ChatWindow() {
-    const [question, setQuestion] = useState<string>()
+import {Button} from "@/components/ui/button"
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
+import {Textarea} from "@/components/ui/textarea"
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        console.log(question)
+const FormSchema = z.object({
+    question: z.string(),
+})
+
+export default function TextareaForm() {
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+    })
+
+    function onSubmit(data: z.infer<typeof FormSchema>) {
+        console.log(data);
     }
 
     return (
-        <div className={"px-1 py-2 w-full"}>
-            <div className={"flex-row"}>
-                <div className={"text-small font-bold"}>Need help?</div>
-                <form onSubmit={handleSubmit}>
-                    <Textarea
-                        placeholder={"Ask a question"}
-                        onChange={(e) => setQuestion(e.target.value)}
-                    />
-                    <Button className={"w-full"} type={"submit"}>Send Question</Button>
-                </form>
-            </div>
-        </div>
-    );
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="container w-full p-3 space-y-6">
+                <FormField
+                    control={form.control}
+                    name="question"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Need help?</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Ask a question"
+                                    className="resize-none"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                Your messages may be monitored and reviewed.
+                            </FormDescription>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" className={"w-full"}>Ask Question</Button>
+            </form>
+        </Form>
+    )
 }
