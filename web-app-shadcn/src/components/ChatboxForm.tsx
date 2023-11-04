@@ -17,10 +17,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 const FormSchema = z.object({
-  question: z.string(),
+  question: z
+    .string()
+    .min(8, "Your question is too short!")
+    .max(128, "Your question is too long!"),
 });
 
-export default function TextareaForm() {
+export default function ChatboxForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
