@@ -1,5 +1,5 @@
-import ChatWindow from "@/components/ChatWindow";
+import ChatboxForm from "@/components/ChatboxForm";
 
 export default function ChatboxPage() {
-  return <ChatWindow />;
+  return <ChatboxForm />;
 }
