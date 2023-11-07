@@ -15,17 +15,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 const FormSchema = z.object({
   question: z
     .string()
     .min(8, "Your question is too short!")
     .max(128, "Your question is too long!"),
+  email: z.string().min(3, "Your email is too short!"),
 });
 
 export default function ChatboxForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "",
+    },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -40,13 +45,33 @@ export default function ChatboxForm() {
       >
         <FormField
           control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Enter Email</FormLabel>
+              <FormControl>
+                <Input
+                  type={"email"}
+                  placeholder={"email@hawaii.edu"}
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                We may contact you in the future.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="question"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Need help?</FormLabel>
+              <FormLabel>Ask your question</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Ask a question"
+                  placeholder="I need help with..."
                   className="resize-none"
                   {...field}
                 />
