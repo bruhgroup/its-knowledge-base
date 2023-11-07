@@ -16,7 +16,12 @@ export default function ChatboxModal({
       >
         X
       </Button>
-      <iframe src={"/chatbox"} allowFullScreen height={"300px"} />
+      <iframe
+        src={"/chatbox"}
+        allowFullScreen
+        height={"500px"}
+        width={"500px"}
+      />
     </div>
   );
 }
