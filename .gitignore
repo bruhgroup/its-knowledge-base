@@ -1,7 +1,6 @@
 .idea
+resources
 **/node_modules
-resources/html
-resources/json
-resources/models
-**/*/data.json
 /nlpTesting/cache
+
+**/*/data.json

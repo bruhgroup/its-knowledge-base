@@ -1,21 +1,44 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// After changing this file, use `yarn run prisma:generate` to update client bindings
+// Update development database with `yarn run prisma:push`
+// Create migrations for production database with `yarn run prisma:migrate`
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DATABASE_URL")
 }
 
 model User {
-  id        String   @default(cuid()) @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email String @unique
+  email     String @unique
+  firstName String
+
+  questions Question[]
 
   @@map("users")
+}
+
+// TODO: Model as ChatSession, containing many QuestionAnswer.
+// Make Question/Answer unique constraint per ChatSession, so duplicates are ignored (?)
+// Similar: https://stackoverflow.com/questions/74122097/prisma-prevent-duplicated-likes-button
+model Question {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String // foreign key
+
+  question String
+  answer   String
+
+  @@map("questions")
 }
