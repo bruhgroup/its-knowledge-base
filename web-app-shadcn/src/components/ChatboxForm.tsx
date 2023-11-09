@@ -16,39 +16,45 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { handleChatboxSubmission } from "@/lib/chatbox/handleChatboxSubmission";
 
-const FormSchema = z.object({
+export const ChatboxFormSchema = z.object({
   question: z
     .string()
     .min(8, "Your question is too short!")
     .max(128, "Your question is too long!"),
-  email: z.string().min(3, "Your email is too short!"),
+  email: z
+    .string()
+    .min(6, "Your email is too short!")
+    .max(64, "Your email is too long!"),
+  firstName: z
+    .string()
+    .min(1, "Your first name is too short!")
+    .max(32, "Your first name is too long!"),
 });
 
 export default function ChatboxForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof ChatboxFormSchema>>({
+    resolver: zodResolver(ChatboxFormSchema),
     defaultValues: {
       email: "",
+      firstName: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
-
+  // TODO: Make a different form page for ask question.
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="container w-full p-3 space-y-6"
+        onSubmit={form.handleSubmit((data) => handleChatboxSubmission(data))}
+        className="container w-full p-3 space-y-4"
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Enter Email</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
                   type={"email"}
@@ -56,9 +62,19 @@ export default function ChatboxForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                We may contact you in the future.
-              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>First Name</FormLabel>
+              <FormControl>
+                <Input type={"text"} placeholder={"John"} {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
