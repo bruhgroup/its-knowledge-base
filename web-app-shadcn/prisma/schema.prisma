@@ -9,6 +9,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("PRISMA_DATABASE_URL")
@@ -22,23 +26,38 @@ model User {
   email     String @unique
   firstName String
 
-  questions Question[]
+  chatSessions ChatSession[]
 
   @@map("users")
 }
 
-// TODO: Model as ChatSession, containing many QuestionAnswer.
-// Make Question/Answer unique constraint per ChatSession, so duplicates are ignored (?)
-// Similar: https://stackoverflow.com/questions/74122097/prisma-prevent-duplicated-likes-button
-model Question {
+model ChatSession {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
   author   User   @relation(fields: [authorId], references: [id])
-  authorId String // foreign key
+  authorId String
 
-  question String
-  answer   String
+  chatMessages ChatMessage[]
 
-  @@map("questions")
+  @@map("chatSessions")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id])
+  chatSessionId String
+
+  type    ChatMessageType
+  message String
+  rating  Boolean?
+
+  @@map("messages")
+}
+
+enum ChatMessageType {
+  QUESTION
+  ANSWER
 }
