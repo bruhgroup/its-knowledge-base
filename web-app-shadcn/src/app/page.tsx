@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <div className={"fixed w-screen h-screen"}>
+      <div className={"fixed bottom-4 right-8"}>
         <ChatboxState />
       </div>
 
