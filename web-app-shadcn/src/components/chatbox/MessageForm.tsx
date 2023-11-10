@@ -15,8 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { ContactFormSchema } from "@/components/chatbox/ContactForm";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
+import { UserInfoType } from "@/components/ChatboxForm";
 
 export const MessageFormSchema = z.object({
   question: z
@@ -27,50 +27,51 @@ export const MessageFormSchema = z.object({
 
 export default function MessageForm({
   userInfo,
+  initialQuestion,
 }: {
-  userInfo: z.infer<typeof ContactFormSchema>;
+  userInfo: UserInfoType;
+  initialQuestion: string;
 }) {
   const form = useForm<z.infer<typeof MessageFormSchema>>({
     resolver: zodResolver(MessageFormSchema),
   });
 
-  // TODO: Add ai/human chat exchange
+  // TODO: fetch question/answer from database
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) =>
-          contactSubmission({
-            email: userInfo.email,
-            firstName: userInfo.firstName,
-            question: userInfo.question,
-          }),
-        )}
-        className={"container w-full p-3 space-y-4"}
-      >
-        <FormField
-          control={form.control}
-          name={"question"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Ask your question</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={"I need help with..."}
-                  className={"resize-none"}
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Your messages may be monitored and reviewed.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+    <>
+      <div>{initialQuestion}</div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) =>
+            contactSubmission({ ...userInfo, question: data.question }),
           )}
-        />
-        <Button type={"submit"} className={"w-full"}>
-          Ask Question
-        </Button>
-      </form>
-    </Form>
+          className={"container w-full p-3 space-y-4"}
+        >
+          <FormField
+            control={form.control}
+            name={"question"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ask your question</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder={"I need help with..."}
+                    className={"resize-none"}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Your messages may be monitored and reviewed.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type={"submit"} className={"w-full"}>
+            Ask Question
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 }
