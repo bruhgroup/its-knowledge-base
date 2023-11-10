@@ -8,14 +8,16 @@ export default function ChatboxState() {
   const [chatbox, setChatbox] = useState<boolean>(false);
 
   return (
-    <div className={"absolute bottom-4 right-8 flex flex-col gap-3 items-end"}>
+    <div className={"bg-white flex flex-col gap-3 items-end"}>
       {chatbox && (
         <div className={"shadow-2xl"}>
           <ChatboxForm />
           {/*<iframe*/}
           {/*  src={"/chatbox"}*/}
           {/*  allowFullScreen*/}
-          {/*  className={"w-full h-full border-none"}*/}
+          {/*  width={"400px"}*/}
+          {/*  height={"500px"}*/}
+          {/*  className={"border-none"}*/}
           {/*/>*/}
         </div>
       )}

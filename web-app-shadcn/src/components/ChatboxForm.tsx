@@ -44,7 +44,7 @@ export default function ChatboxForm() {
 
   // TODO: Make a different form page for ask question.
   return (
-    <div className={"bg-white"}>
+    <>
       <div className={"bg-blue-500 h-[3em] flex items-center justify-center"}>
         <span className={"font-semibold text-white"}>How can we help you?</span>
       </div>
@@ -107,7 +107,7 @@ export default function ChatboxForm() {
             Ask Question
           </Button>
         </form>
-      </Form>{" "}
-    </div>
+      </Form>
+    </>
   );
 }
