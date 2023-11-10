@@ -8,7 +8,7 @@ export async function handleChatboxSubmission(
   data: z.infer<typeof ChatboxFormSchema>,
 ) {
   const _where = { email: data.email };
-  const _questions = { create: { question: data.question, answer: "" } };
+  const _questions = { create: { question: data.question, answer: "Answer" } };
 
   const user = await prisma.user.findUnique({ where: _where });
 

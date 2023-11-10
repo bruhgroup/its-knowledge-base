@@ -12,22 +12,25 @@ export default function Home() {
   const askus = data as Record<string, Record<string, string>>;
 
   return (
-    <main className={"container"}>
-      <div className={"fixed bottom-0 right-0 p-5"}>
+    <>
+      <div className={"fixed w-screen h-screen"}>
         <ChatboxState />
       </div>
-      <Accordion type="single" collapsible className={"w-full"}>
-        {Object.keys(askus).map((id, index) => {
-          return (
-            <AccordionItem key={index} value={`question-${id}`}>
-              <AccordionTrigger>
-                Question {id} - {askus[id].question}
-              </AccordionTrigger>
-              <AccordionContent>{askus[id].answer}</AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
-    </main>
+
+      <main className={"container"}>
+        <Accordion type="single" collapsible className={"w-full"}>
+          {Object.keys(askus).map((id, index) => {
+            return (
+              <AccordionItem key={index} value={`question-${id}`}>
+                <AccordionTrigger>
+                  Question {id} - {askus[id].question}
+                </AccordionTrigger>
+                <AccordionContent>{askus[id].answer}</AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </main>
+    </>
   );
 }
