@@ -41,9 +41,11 @@ export const ContactFormSchema = z.object({
 export default function ContactForm({
   setUserInfo,
   pushQuestion,
+  setSessionId,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   pushQuestion: (question: string) => void;
+  setSessionId: (session_id: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -68,6 +70,7 @@ export default function ContactForm({
             firstName: data.firstName,
           });
           pushQuestion(data.question);
+          setSessionId(res.chatSessions[0].id);
         })}
         className={"container w-full p-3 space-y-4"}
       >

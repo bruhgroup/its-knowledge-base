@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
 import { useEffect } from "react";
+import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 
 export const MessageFormSchema = z.object({
   question: z
@@ -29,9 +30,11 @@ export const MessageFormSchema = z.object({
 
 export default function MessageForm({
   userInfo,
+  sessionId,
   pushQuestion,
 }: {
   userInfo: UserInfoType;
+  sessionId: string;
   pushQuestion: (question: string) => void;
 }) {
   const form = useForm<z.infer<typeof MessageFormSchema>>({
@@ -42,17 +45,12 @@ export default function MessageForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(async (data) => {
-          const res = await contactSubmission({
-            ...userInfo,
-            question: data.question,
-          });
+          const res = await messageSubmission(data, userInfo.email, sessionId);
           // TODO: show an error state to client
           if (!res) {
             return console.error("An error occurred while submitting data");
           }
-
           pushQuestion(data.question);
-
           form.reset({ question: "" });
         })}
         className={"container w-full p-3 space-y-4"}

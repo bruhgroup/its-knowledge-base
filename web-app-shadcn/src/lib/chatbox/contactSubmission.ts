@@ -1,14 +1,14 @@
 "use server";
 
 import * as z from "zod";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/prisma/prisma";
 import { ContactFormSchema } from "@/components/chatbox/ContactForm";
 import { ChatMessageType } from "@prisma/client";
+import getUserByEmail from "@/lib/prisma/getUserByEmail";
 
 export async function contactSubmission(
   data: z.infer<typeof ContactFormSchema>,
 ) {
-  const _where = { email: data.email };
   const _chatSession = {
     create: {
       chatMessages: {
@@ -20,7 +20,10 @@ export async function contactSubmission(
     },
   };
 
-  const user = await prisma.user.findUnique({ where: _where });
+  // Selects the most recently added ChatSession object.
+  const _select = { chatSessions: { take: -1 } };
+
+  const user = await getUserByEmail(data.email);
 
   if (!user) {
     return prisma.user.create({
@@ -29,14 +32,16 @@ export async function contactSubmission(
         firstName: data.firstName,
         chatSessions: _chatSession,
       },
+      select: _select,
     });
   }
 
   return prisma.user.update({
-    where: _where,
+    where: { email: data.email },
     data: {
       updatedAt: new Date(),
       chatSessions: _chatSession,
     },
+    select: _select,
   });
 }
