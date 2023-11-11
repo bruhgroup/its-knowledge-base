@@ -23,24 +23,27 @@ import { UserInfoType } from "@/components/ChatboxForm";
 export const ContactFormSchema = z.object({
   question: z
     .string()
+    .trim()
     .min(6, "Your question is too short!")
     .max(128, "Your question is too long!"),
   email: z
     .string()
+    .trim()
     .min(6, "Your email is too short!")
     .max(64, "Your email is too long!"),
   firstName: z
     .string()
+    .trim()
     .min(1, "Your first name is too short!")
     .max(32, "Your first name is too long!"),
 });
 
 export default function ContactForm({
   setUserInfo,
-  setQuestion,
+  pushQuestion,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
-  setQuestion: Dispatch<SetStateAction<string | undefined>>;
+  pushQuestion: (question: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -64,7 +67,7 @@ export default function ContactForm({
             email: data.email,
             firstName: data.firstName,
           });
-          setQuestion(data.question);
+          pushQuestion(data.question);
         })}
         className={"container w-full p-3 space-y-4"}
       >
@@ -103,7 +106,7 @@ export default function ContactForm({
           name={"question"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ask your question</FormLabel>
+              <FormLabel>Your Question</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder={"I need help with..."}
