@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Scroll to bottom when new message is added
+ * https://stackoverflow.com/a/72644230
+ */
+.scroller {
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-anchor: auto !important; /*  See https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-anchor */
+}
+
+.scroller .scroller-content .scroller-item {
+    height: fit-content;
+    transform: translateZ(0); /* fixes a bug in Safari iOS where the scroller doesn't update */
+}

@@ -8,9 +8,9 @@ export default function ChatboxState() {
   const [chatbox, setChatbox] = useState<boolean>(false);
 
   return (
-    <div className={"bg-white flex flex-col gap-3 items-end"}>
+    <div className={"flex flex-col gap-3 items-end"}>
       {chatbox && (
-        <div className={"shadow-2xl"}>
+        <div className={"shadow-2xl bg-white min-w-[20em] max-w-[20em]"}>
           <ChatboxForm />
           {/*<iframe*/}
           {/*  src={"/chatbox"}*/}
