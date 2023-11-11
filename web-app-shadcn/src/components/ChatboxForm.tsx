@@ -13,6 +13,7 @@ export type UserInfoType = Omit<z.infer<typeof ContactFormSchema>, "question">;
 
 export default function ChatboxForm() {
   const [userInfo, setUserInfo] = useState<UserInfoType>();
+  const [sessionId, setSessionId] = useState<string>();
   const [questions, setQuestions] = useState<Array<string>>([]);
 
   return (
@@ -20,7 +21,8 @@ export default function ChatboxForm() {
       <div className={"bg-blue-500 h-[3em] flex items-center justify-center"}>
         <span className={"font-semibold text-white"}>How can we help you?</span>
       </div>
-      {userInfo ? (
+      {/*TODO: handle when userInfo / sessionId is invalid*/}
+      {userInfo && sessionId ? (
         <>
           <div className={"scroller p-3 min-h-[20em] max-h-[20em]"}>
             <div className={"scroller-content space-y-2"}>
@@ -40,6 +42,7 @@ export default function ChatboxForm() {
           {/*TODO: handle if question is only spaces*/}
           <MessageForm
             userInfo={userInfo}
+            sessionId={sessionId}
             pushQuestion={(question: string) =>
               setQuestions([...questions, question])
             }
@@ -51,6 +54,7 @@ export default function ChatboxForm() {
           pushQuestion={(question: string) =>
             setQuestions([...questions, question])
           }
+          setSessionId={setSessionId}
         />
       )}
     </>
