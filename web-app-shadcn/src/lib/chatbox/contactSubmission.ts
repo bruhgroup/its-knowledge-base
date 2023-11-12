@@ -4,7 +4,7 @@ import * as z from "zod";
 import prisma from "@/lib/prisma/prisma";
 import { ContactFormSchema } from "@/components/chatbox/ContactForm";
 import { ChatMessageType } from "@prisma/client";
-import getUserByEmail from "@/lib/prisma/getUserByEmail";
+import { getUser } from "@/lib/prisma/getUsers";
 
 export async function contactSubmission(
   data: z.infer<typeof ContactFormSchema>,
@@ -23,7 +23,7 @@ export async function contactSubmission(
   // Selects the most recently added ChatSession object.
   const _select = { chatSessions: { take: -1 } };
 
-  const user = await getUserByEmail(data.email);
+  const user = await getUser(data.email);
 
   if (!user) {
     return prisma.user.create({
