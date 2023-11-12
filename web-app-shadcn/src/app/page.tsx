@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import ChatboxState from "@/components/ChatboxState";
 
-export default function Home() {
+export default function HomePage() {
   // TODO: fetch data from an API
   const askus = data as Record<string, Record<string, string>>;
 
