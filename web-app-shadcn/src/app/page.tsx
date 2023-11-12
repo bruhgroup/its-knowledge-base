@@ -18,6 +18,10 @@ export default function HomePage() {
       </div>
 
       <main className={"container"}>
+        {/*<iframe*/}
+        {/*  src={"https://www.hawaii.edu/help/chat/"}*/}
+        {/*  className={"h-screen"}*/}
+        {/*></iframe>*/}
         <Accordion type="single" collapsible className={"w-full"}>
           {Object.keys(askus).map((id, index) => {
             return (
