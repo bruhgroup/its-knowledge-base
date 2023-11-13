@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
 import response from "@/lib/chatbox/requestResponse";
+import requestResponse from "@/lib/chatbox/requestResponse";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -42,11 +43,11 @@ export const ContactFormSchema = z.object({
 export default function ContactForm({
   setUserInfo,
   setSessionId,
-      pushMessages,
+  pushMessages,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   setSessionId: (session_id: string) => void;
-    pushMessages: (question: string, answer : string) => void;
+  pushMessages: (question: string, answer: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -70,8 +71,16 @@ export default function ContactForm({
             firstName: data.firstName,
           });
           setSessionId(res.chatSessions[0].id);
-          const answer = await response(data.question);
-          pushMessages(data.question, answer);
+          requestResponse(data.question).then((ans) => {
+            if (ans) {
+              pushMessages(data.question, ans);
+            } else {
+              pushMessages(
+                data.question,
+                "Sorry, I don't understand your question.",
+              );
+            }
+          });
         })}
         className={"container w-full p-3 space-y-4"}
       >

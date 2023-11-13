@@ -15,7 +15,6 @@ export default async function SessionsPage({
   params: { userId: string };
 }) {
   const sessions = await getChatSessions(params.userId, true);
-  console.log(sessions[0]);
 
   return (
     <div>
