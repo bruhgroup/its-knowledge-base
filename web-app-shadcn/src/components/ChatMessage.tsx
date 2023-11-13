@@ -14,7 +14,9 @@ export default function ChatMessage({
     return (
       <div className={"flex items-end gap-2 justify-end"}>
         <div
-          className={"bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 break-words"}
+          className={
+            "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+          }
         >
           <p>{text}</p>
         </div>
@@ -32,7 +34,11 @@ export default function ChatMessage({
       <Avatar>
         <AvatarFallback>ITS</AvatarFallback>
       </Avatar>
-      <div className={"bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 break-all"}>
+      <div
+        className={
+          "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+        }
+      >
         <p>{text}</p>
       </div>
     </div>
