@@ -853,6 +853,14 @@ has-unicode@^2.0.1:
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==
 
+hnswlib-node@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/hnswlib-node/-/hnswlib-node-2.0.0.tgz#d62ef51694a3f09caa6e9c8ffbfd1124fa45b1da"
+  integrity sha512-ib5c5m5JSW0w/8CfufAozrgXSGnWizH62YZkd2JvGVCi2OE45jQZmtQzh5aXszQiJTr8+6bMxnN/Qo2w4e+Z4A==
+  dependencies:
+    bindings "^1.5.0"
+    node-addon-api "^7.0.0"
+
 humanize-ms@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/humanize-ms/-/humanize-ms-1.2.1.tgz#c46e3159a293f6b896da29316d8b6fe8bb79bbed"
@@ -1404,6 +1412,11 @@ path-key@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-3.1.1.tgz#581f6ade658cbba65a0d3380de7753295054f375"
   integrity sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
+
+pickleparser@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/pickleparser/-/pickleparser-0.2.1.tgz#7a03f1e9204e91ec9b8efbd3ba2f1eb5955b994d"
+  integrity sha512-kMzY3uFYcR6OjOqr7nV2nkaXaBsUEOafu3zgPxeD6s/2ueMfVQH8lrymcDWBPGx0OkVxGMikxQit6jgByXjwBg==
 
 prebuild-install@^7.1.1:
   version "7.1.1"
