@@ -1,4 +1,3 @@
-import { getAllChatSessions } from "@/lib/prisma/getChatSessions";
 import {
   Table,
   TableBody,
