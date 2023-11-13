@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { getUsersWithSessions } from "@/lib/prisma/getUsers";
 
+export const dynamic = "force-dynamic";
+
 export default async function HistoryPage() {
   const users = await getUsersWithSessions(true);
 
