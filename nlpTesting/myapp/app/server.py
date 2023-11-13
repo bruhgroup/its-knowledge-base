@@ -1,21 +1,22 @@
 import json
+from typing import List, Tuple
+
 from fastapi import FastAPI
 from langchain.chains import ConversationalRetrievalChain
-from langserve import add_routes
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.storage import LocalFileStore
+from langchain.docstore.document import Document
 from langchain.embeddings import GPT4AllEmbeddings, CacheBackedEmbeddings
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.schema import StrOutputParser
 from langchain.globals import set_debug
 from langchain.globals import set_verbose
 from langchain.llms import LlamaCpp
 from langchain.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate, ChatPromptTemplate
 from langchain.pydantic_v1 import BaseModel, Field
-from langchain.docstore.document import Document
-from typing import List, Tuple
-
+from langchain.schema import StrOutputParser
+from langchain.schema.runnable import RunnablePassthrough, RunnableParallel
+from langchain.storage import LocalFileStore
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langserve import add_routes
+from starlette.middleware.cors import CORSMiddleware
 
 # Debugging Variables
 set_debug(True)
@@ -77,6 +78,7 @@ model = LlamaCpp(
     verbose=True,  # Verbose is required to pass to the callback manager
 )
 
+
 # User input
 class ChatHistory(BaseModel):
     """Chat history with the bot."""
@@ -86,6 +88,7 @@ class ChatHistory(BaseModel):
         extra={"widget": {"type": "chat", "input": "question", "output": "answer"}},
     )
     question: str
+
 
 # https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/split_by_token
 # Splitting by character may result in some loss of context? Maybe worth attempting to split by tokens.
@@ -107,11 +110,12 @@ documents = text_splitter.split_documents(load_json_file("../../resources/json/d
 
 # Store the embedded chunks into a vector store for easy access
 vectorstore = Chroma.from_documents(documents, cached_embedder)
-retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+# retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+retriever = vectorstore.as_retriever()
 
-chain = ConversationalRetrievalChain.from_llm(model, retriever).with_types(
-    input_type=ChatHistory
-)
+# chain = ConversationalRetrievalChain.from_llm(model, retriever, prompt).with_types(
+#     input_type=ChatHistory
+# )
 # Final chain to pipe everything
 # chain = (
 #         {
@@ -124,16 +128,56 @@ chain = ConversationalRetrievalChain.from_llm(model, retriever).with_types(
 # )
 
 # FAST API SECTION
-app = FastAPI(title="Chatbot",    version="1.0",
+app = FastAPI(title="Chatbot", version="1.0")
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://*"
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
 # Test get with url parameter
 @app.get("/help/{question}")
 async def root(question):
-        return f'{chain.invoke(question)}\n\nSources: {", ".join(sources)}'
+    a = (
+            {
+                "context": retriever | format_docs,
+                "question": RunnablePassthrough()
+            }
+            | prompt
+            | model
+            | StrOutputParser()
+    )
+    return f'{a.invoke(question)}\n\nSources: {", ".join(sources)}'
 
 
+#
+#
+# @app.post("/test/invoke")
+# async def work(query: Question):
+#     a = (
+#             {
+#                 "context": retriever | format_docs,
+#                 "question": RunnablePassthrough()
+#             }
+#             | prompt
+#             | model
+#             | StrOutputParser()
+#     )
+#     return f'{a.invoke(query)}\n\nSources: {", ".join(sources)}'
+
+
+# #
 # @app.get("/chain/invoke")
 # async def get_chain():
 #     return (
@@ -146,21 +190,29 @@ async def root(question):
 #             | StrOutputParser()
 #     )
 
-# Makes model
-add_routes(app, chain, path="/model")
+
 
 # Model without context
-add_routes(app, (
-            {
-                "context": retriever | format_docs,
-                "question": RunnablePassthrough()
-            }
-            | prompt
-            | model
-            | StrOutputParser()
-    ), path="/chain")
 
-add_routes(app,retriever, path="/retriever")
+# add_routes(app, retriever | format_docs, path="/retriever")
+add_routes(app, retriever)
+
+
+# Add typing for input
+class Question(BaseModel):
+    __root__: str
+
+
+chain = (
+        RunnableParallel({"context": retriever, "question": RunnablePassthrough()})
+        | prompt
+        | model
+        | StrOutputParser()
+)
+chain = chain.with_types(input_type=Question)
+
+add_routes(app, chain, path="/chain", input_type=Question)
+# add_routes(app, chain, path="/llama")
 
 if __name__ == "__main__":
     import uvicorn

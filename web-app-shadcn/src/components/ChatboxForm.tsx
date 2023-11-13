@@ -14,7 +14,7 @@ export type UserInfoType = Omit<z.infer<typeof ContactFormSchema>, "question">;
 export default function ChatboxForm() {
   const [userInfo, setUserInfo] = useState<UserInfoType>();
   const [sessionId, setSessionId] = useState<string>();
-  const [questions, setQuestions] = useState<Array<string>>([]);
+  const [messages, setMessages] = useState<{question: string, answer: string}[]>([]);
 
   return (
     <>
@@ -26,15 +26,23 @@ export default function ChatboxForm() {
         <>
           <div className={"scroller p-3 min-h-[20em] max-h-[20em]"}>
             <div className={"scroller-content space-y-2"}>
-              {questions.map((question, index) => (
-                <div key={index} className={"scroller-item"}>
-                  <ChatMessage
-                    type={ChatMessageType.QUESTION}
-                    name={userInfo.firstName}
-                    text={question}
-                  />
-                </div>
-              ))}
+                {
+                  messages.map((qa, index) => {
+                      console.log(qa)
+                      return <div key={index} className={"scroller-item"}>
+                          {<>
+                              <ChatMessage
+                                  type={ChatMessageType.QUESTION}
+                                  name={userInfo.firstName}
+                                  text={qa.question}
+                              />
+                              <ChatMessage
+                                  type={ChatMessageType.ANSWER}
+                                  name={"ITS"}
+                                  text={qa.answer}
+                              /></>}
+                      </div>
+                  })}
             </div>
           </div>
 
@@ -43,16 +51,16 @@ export default function ChatboxForm() {
           <MessageForm
             userInfo={userInfo}
             sessionId={sessionId}
-            pushQuestion={(question: string) =>
-              setQuestions([...questions, question])
+            pushMessages={(question: string, answer: string) =>
+              setMessages([...messages, {question, answer}])
             }
           />
         </>
       ) : (
         <ContactForm
           setUserInfo={setUserInfo}
-          pushQuestion={(question: string) =>
-            setQuestions([...questions, question])
+          pushMessages={(question: string, answer: string) =>
+            setMessages([...messages, {question, answer}])
           }
           setSessionId={setSessionId}
         />

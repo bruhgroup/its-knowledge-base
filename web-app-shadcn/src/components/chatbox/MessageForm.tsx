@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import response from "../../lib/chatbox/requestResponse"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,9 @@ import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
 import { useEffect } from "react";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
+import ChatMessage from "@/components/ChatMessage";
+import {ChatMessageType} from "@prisma/client";
+import requestResponse from "@/lib/chatbox/requestResponse";
 
 export const MessageFormSchema = z.object({
   question: z
@@ -31,11 +35,11 @@ export const MessageFormSchema = z.object({
 export default function MessageForm({
   userInfo,
   sessionId,
-  pushQuestion,
+  pushMessages
 }: {
   userInfo: UserInfoType;
   sessionId: string;
-  pushQuestion: (question: string) => void;
+  pushMessages: (question: string, answer : string) => void;
 }) {
   const form = useForm<z.infer<typeof MessageFormSchema>>({
     resolver: zodResolver(MessageFormSchema),
@@ -50,8 +54,14 @@ export default function MessageForm({
           if (!res) {
             return console.error("An error occurred while submitting data");
           }
-          pushQuestion(data.question);
           form.reset({ question: "" });
+            requestResponse(data.question).then(ans => {
+                if (ans) {
+                    pushMessages(data.question, ans);
+                } else {
+                    pushMessages(data.question, "Sorry, I don't understand your question.");
+                }
+            })
         })}
         className={"container w-full p-3 space-y-4"}
       >

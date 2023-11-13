@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "Chatbotter"
 version = "0.1.0"
-description = ""
+description = "Chat bot"
 authors = ["Vincent Chan"]
 readme = "README.md"
 

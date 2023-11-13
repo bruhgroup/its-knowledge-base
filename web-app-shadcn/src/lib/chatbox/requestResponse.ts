@@ -1,7 +1,9 @@
-const fetchData = async () => {
+
+const response = async (question: string) => {
     try {
       const apiEndpoint = 'http://localhost:8000/chain/invoke/';
-      const data = { input: 'Help me reset my password' };
+      const data = { input: question };
+      console.log(`data: ${question}`)
 
       const requestOptions: RequestInit = {
         method: 'POST',
@@ -19,4 +21,4 @@ const fetchData = async () => {
     }
   };
 
-fetchData().then(data => console.log(data.output));
+export default response

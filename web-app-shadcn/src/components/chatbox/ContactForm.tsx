@@ -19,6 +19,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
+import response from "@/lib/chatbox/requestResponse";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -40,12 +41,12 @@ export const ContactFormSchema = z.object({
 
 export default function ContactForm({
   setUserInfo,
-  pushQuestion,
   setSessionId,
+      pushMessages,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
-  pushQuestion: (question: string) => void;
   setSessionId: (session_id: string) => void;
+    pushMessages: (question: string, answer : string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -64,13 +65,13 @@ export default function ContactForm({
           if (!res) {
             return console.error("An error occurred while submitting data");
           }
-
           setUserInfo({
             email: data.email,
             firstName: data.firstName,
           });
-          pushQuestion(data.question);
           setSessionId(res.chatSessions[0].id);
+          const answer = await response(data.question);
+          pushMessages(data.question, answer);
         })}
         className={"container w-full p-3 space-y-4"}
       >
