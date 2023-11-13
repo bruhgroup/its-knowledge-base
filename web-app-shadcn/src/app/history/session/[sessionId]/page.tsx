@@ -15,7 +15,6 @@ export default async function SessionMessagesPage({
   params: { sessionId: string };
 }) {
   const messages = await getChatSessionMessages(params.sessionId);
-  console.log(messages[0]);
 
   return (
     <div>

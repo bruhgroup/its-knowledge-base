@@ -10,7 +10,7 @@ export default function ChatboxState() {
   return (
     <div className={"flex flex-col gap-3 items-end"}>
       {chatbox && (
-        <div className={"shadow-2xl bg-white min-w-[20em] max-w-[20em]"}>
+        <div className={"shadow-2xl bg-white min-w-[24em] max-w-[24em]"}>
           <ChatboxForm />
           {/*<iframe*/}
           {/*  src={"/chatbox"}*/}
