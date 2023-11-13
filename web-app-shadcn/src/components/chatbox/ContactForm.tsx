@@ -73,7 +73,7 @@ export default function ContactForm({
           setSessionId(res.chatSessions[0].id);
           requestResponse(data.question).then((ans) => {
             if (ans) {
-              pushMessages(data.question, ans);
+              pushMessages(data.question, ans.output);
             } else {
               pushMessages(
                 data.question,

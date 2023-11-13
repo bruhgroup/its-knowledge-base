@@ -57,7 +57,7 @@ export default function MessageForm({
           form.reset({ question: "" });
             requestResponse(data.question).then(ans => {
                 if (ans) {
-                    pushMessages(data.question, ans);
+                    pushMessages(data.question, ans.output);
                 } else {
                     pushMessages(data.question, "Sorry, I don't understand your question.");
                 }
