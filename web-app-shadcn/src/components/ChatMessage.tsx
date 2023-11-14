@@ -31,13 +31,13 @@ export default function ChatMessage({
   }
 if (loaded) {
     return (
-        <div className={"flex items-end gap-2 justify-end"}>
+        <div className={"flex items-end gap-2 justify-start"}>
             <Avatar>
                 <AvatarFallback>ITS</AvatarFallback>
             </Avatar>
             <div
                 className={
-                    "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+                    "bg-gray-300 rounded-e-2xl rounded-tl-2xl p-3 [word-break:break-word]"
                 }
             >
                 <p>{text}</p>
@@ -46,13 +46,13 @@ if (loaded) {
     );
 } else {
     return (
-        <div className={"flex items-end gap-2 justify-end"}>
+        <div className={"flex items-end gap-2 justify-start"}>
             <Avatar>
                 <AvatarFallback>ITS</AvatarFallback>
             </Avatar>
             <div
                 className={
-                    "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+                    "bg-gray-300 rounded-e-2xl rounded-tl-2xl p-3 [word-break:break-word]"
                 }
             >
             <img src={"https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/abfa05c49acf005b8b1e0ef8eb25a67a7057eb20/svg-css/3-dots-bounce.svg"}/>
