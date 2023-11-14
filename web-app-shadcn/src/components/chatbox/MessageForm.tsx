@@ -35,11 +35,13 @@ export const MessageFormSchema = z.object({
 export default function MessageForm({
   userInfo,
   sessionId,
-  pushMessages
+  pushQuestion,
+    pushAnswer
 }: {
   userInfo: UserInfoType;
   sessionId: string;
-  pushMessages: (question: string, answer : string) => void;
+  pushQuestion: (question: string) => void;
+  pushAnswer: (answer: string) => void;
 }) {
   const form = useForm<z.infer<typeof MessageFormSchema>>({
     resolver: zodResolver(MessageFormSchema),
@@ -54,12 +56,13 @@ export default function MessageForm({
           if (!res) {
             return console.error("An error occurred while submitting data");
           }
+          pushQuestion(data.question);
           form.reset({ question: "" });
             requestResponse(data.question).then(ans => {
                 if (ans) {
-                    pushMessages(data.question, ans.output);
+                    pushAnswer(ans.output);
                 } else {
-                    pushMessages(data.question, "Sorry, I don't understand your question.");
+                    pushAnswer("Sorry, I don't understand your question.");
                 }
             })
         })}
