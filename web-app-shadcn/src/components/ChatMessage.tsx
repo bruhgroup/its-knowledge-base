@@ -2,13 +2,14 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ChatMessageType } from "@prisma/client";
 
 export default function ChatMessage({
-  type,
+  type, loaded,
   name,
   text,
 }: {
   type: ChatMessageType;
   name: string;
   text: string;
+  loaded: boolean;
 }) {
   if (type === ChatMessageType.QUESTION) {
     return (
@@ -28,19 +29,35 @@ export default function ChatMessage({
       </div>
     );
   }
-
-  return (
-    <div className={"flex items-end gap-2 justify-end"}>
-      <Avatar>
-        <AvatarFallback>ITS</AvatarFallback>
-      </Avatar>
-      <div
-        className={
-          "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
-        }
-      >
-        <p>{text}</p>
-      </div>
-    </div>
-  );
+if (loaded) {
+    return (
+        <div className={"flex items-end gap-2 justify-end"}>
+            <Avatar>
+                <AvatarFallback>ITS</AvatarFallback>
+            </Avatar>
+            <div
+                className={
+                    "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+                }
+            >
+                <p>{text}</p>
+            </div>
+        </div>
+    );
+} else {
+    return (
+        <div className={"flex items-end gap-2 justify-end"}>
+            <Avatar>
+                <AvatarFallback>ITS</AvatarFallback>
+            </Avatar>
+            <div
+                className={
+                    "bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+                }
+            >
+            <img src={"https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/abfa05c49acf005b8b1e0ef8eb25a67a7057eb20/svg-css/3-dots-bounce.svg"}/>
+            </div>
+        </div>
+    );
+}
 }

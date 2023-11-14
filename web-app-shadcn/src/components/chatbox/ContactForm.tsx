@@ -43,11 +43,13 @@ export const ContactFormSchema = z.object({
 export default function ContactForm({
   setUserInfo,
   setSessionId,
-  pushMessages,
+  pushQuestion,
+    pushAnswer
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   setSessionId: (session_id: string) => void;
-  pushMessages: (question: string, answer: string) => void;
+    pushQuestion: (question: string) => void;
+    pushAnswer: (answer: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -66,6 +68,7 @@ export default function ContactForm({
           if (!res) {
             return console.error("An error occurred while submitting data");
           }
+            pushQuestion(data.question);
           setUserInfo({
             email: data.email,
             firstName: data.firstName,
@@ -73,12 +76,9 @@ export default function ContactForm({
           setSessionId(res.chatSessions[0].id);
           requestResponse(data.question).then((ans) => {
             if (ans) {
-              pushMessages(data.question, ans.output);
+              pushAnswer(ans.output);
             } else {
-              pushMessages(
-                data.question,
-                "Sorry, I don't understand your question.",
-              );
+              pushAnswer("Sorry, I don't understand your question." );
             }
           });
         })}
