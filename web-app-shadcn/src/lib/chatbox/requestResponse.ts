@@ -2,7 +2,7 @@
 
 export default async function requestResponse(question: string) {
   try {
-    const apiEndpoint = "http://localhost:8000/chain/invoke/";
+    const apiEndpoint = "http://127.0.0.1:8000/chain/invoke/";
     const data = { input: question };
 
     const requestOptions: RequestInit = {
