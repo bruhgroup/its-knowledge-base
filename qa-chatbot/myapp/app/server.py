@@ -14,7 +14,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langserve import add_routes
 from starlette.middleware.cors import CORSMiddleware
-from utils import loader
+import loader
 
 # Debugging Variables
 set_debug(True)
