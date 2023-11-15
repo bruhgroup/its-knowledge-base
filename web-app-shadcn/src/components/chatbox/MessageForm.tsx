@@ -71,7 +71,7 @@ export default function MessageForm({
               sessionId,
               userInfo.email,
               ChatMessageType.ANSWER,
-              data.question,
+              ans.output,
             );
           });
         })}

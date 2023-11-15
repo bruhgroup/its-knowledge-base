@@ -88,7 +88,7 @@ export default function ContactForm({
               res.chatSessions[0].id,
               data.email,
               ChatMessageType.ANSWER,
-              data.question,
+              ans.output,
             );
           });
         })}
