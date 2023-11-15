@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ChatMessageType } from "@prisma/client";
 import Image from "next/image";
+import loadingIcon from "@/public/loadingIcon.svg";
 
 export default function ChatMessage({
   type,
@@ -45,12 +46,7 @@ export default function ChatMessage({
         {loaded ? (
           <p>{text}</p>
         ) : (
-          <Image
-            src={
-              "https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/abfa05c49acf005b8b1e0ef8eb25a67a7057eb20/svg-css/3-dots-bounce.svg"
-            }
-            alt={"Getting response..."}
-          />
+          <Image src={loadingIcon} alt={"Loading..."} />
         )}
       </div>
     </div>

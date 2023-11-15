@@ -76,19 +76,21 @@ export default function ContactForm({
           });
           setSessionId(res.chatSessions[0].id);
 
-          await requestResponse(data.question)
-            .then((ans) => {
-              pushAnswer(ans.output);
-              messageSubmission(
-                res.chatSessions[0].id,
-                data.email,
-                ChatMessageType.ANSWER,
-                data.question,
+          await requestResponse(data.question).then((ans) => {
+            if (!ans) {
+              return pushAnswer(
+                "Sorry, something went wrong. Try again later.",
               );
-            })
-            .catch(() =>
-              pushAnswer("Sorry, something went wrong. Try again later."),
+            }
+
+            pushAnswer(ans.output);
+            messageSubmission(
+              res.chatSessions[0].id,
+              data.email,
+              ChatMessageType.ANSWER,
+              data.question,
             );
+          });
         })}
         className={"container w-full p-3 space-y-4"}
       >
