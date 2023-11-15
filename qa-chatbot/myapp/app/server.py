@@ -1,5 +1,4 @@
 from typing import List, Tuple
-
 from fastapi import FastAPI
 from langchain.embeddings import GPT4AllEmbeddings, CacheBackedEmbeddings
 from langchain.globals import set_debug
@@ -14,12 +13,26 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langserve import add_routes
 from starlette.middleware.cors import CORSMiddleware
-from loader import load_json
+import json
+from langchain.docstore.document import Document
 
 # Debugging Variables
 set_debug(True)
 set_verbose(True)
 
+
+def load_json(file_path):
+    docs = []
+    # Load JSON file
+    with open(file_path, encoding="iso-8859-1") as file:
+        data = json.load(file)
+
+    # Iterate through 'pages'
+    for index, question in data.items():
+        q = question['question']
+        a = question['answer']
+        docs.append(Document(page_content=a, metadata={index: q}))
+    return docs
 
 # Define Sources
 sources = set()
