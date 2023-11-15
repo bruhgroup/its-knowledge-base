@@ -14,7 +14,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langserve import add_routes
 from starlette.middleware.cors import CORSMiddleware
-import loader
+from loader import load_json
 
 # Debugging Variables
 set_debug(True)
@@ -94,7 +94,7 @@ cached_embedder = CacheBackedEmbeddings.from_bytes_store(
     underlying_embeddings, fs, namespace="Token"
 )
 # Split the documents into smaller chunks
-documents = text_splitter.split_documents(loader.load_json("../../resources/json/data.json"))
+documents = text_splitter.split_documents(load_json("../../resources/json/data.json"))
 
 # Store the embedded chunks into a vector store for easy access
 vectorstore = Chroma.from_documents(documents, cached_embedder)
