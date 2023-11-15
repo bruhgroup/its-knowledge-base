@@ -59,19 +59,21 @@ export default function MessageForm({
           pushQuestion(data.question);
           form.reset({ question: "" });
 
-          await requestResponse(data.question)
-            .then((ans) => {
-              pushAnswer(ans.output);
-              messageSubmission(
-                sessionId,
-                userInfo.email,
-                ChatMessageType.ANSWER,
-                data.question,
+          await requestResponse(data.question).then((ans) => {
+            if (!ans) {
+              return pushAnswer(
+                "Sorry, something went wrong. Try again later.",
               );
-            })
-            .catch(() =>
-              pushAnswer("Sorry, something went wrong. Try again later."),
+            }
+
+            pushAnswer(ans.output);
+            messageSubmission(
+              sessionId,
+              userInfo.email,
+              ChatMessageType.ANSWER,
+              data.question,
             );
+          });
         })}
         className={"container w-full p-3 space-y-4"}
       >
