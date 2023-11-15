@@ -38,17 +38,15 @@ export default function ChatboxForm() {
                         loaded={true}
                       />
                     </div>
-
-                      <div className={"scroller-item"}>
-                        <ChatMessage
-                            type={ChatMessageType.ANSWER}
-                            name={"ITS"}
-                            text={answers[index]}
-                            loaded={answers[index] !== undefined}
-                        />
-                      </div>
-                      </div>
-
+                    <div className={"scroller-item"}>
+                      <ChatMessage
+                        type={ChatMessageType.ANSWER}
+                        name={"ITS"}
+                        text={answers[index]}
+                        loaded={answers[index] !== undefined}
+                      />
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -68,10 +66,10 @@ export default function ChatboxForm() {
       ) : (
         <ContactForm
           setUserInfo={setUserInfo}
-           pushQuestion={(question: string) =>
-              setQuestions([...questions, question])
-            }
-            pushAnswer={(answer: string) => setAnswers([...answers, answer])}
+          pushQuestion={(question: string) =>
+            setQuestions([...questions, question])
+          }
+          pushAnswer={(answer: string) => setAnswers([...answers, answer])}
           setSessionId={setSessionId}
         />
       )}

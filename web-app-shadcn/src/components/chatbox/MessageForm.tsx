@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import response from "../../lib/chatbox/requestResponse"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,17 +11,13 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
-import { useEffect } from "react";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
-import ChatMessage from "@/components/ChatMessage";
-import {ChatMessageType} from "@prisma/client";
 import requestResponse from "@/lib/chatbox/requestResponse";
+import { ChatMessageType } from "@prisma/client";
 
 export const MessageFormSchema = z.object({
   question: z
@@ -36,7 +31,7 @@ export default function MessageForm({
   userInfo,
   sessionId,
   pushQuestion,
-    pushAnswer
+  pushAnswer,
 }: {
   userInfo: UserInfoType;
   sessionId: string;
@@ -51,20 +46,32 @@ export default function MessageForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(async (data) => {
-          const res = await messageSubmission(data, userInfo.email, sessionId);
+          const res = await messageSubmission(
+            sessionId,
+            userInfo.email,
+            ChatMessageType.QUESTION,
+            data.question,
+          );
           // TODO: show an error state to client
-          if (!res) {
+          if (!res)
             return console.error("An error occurred while submitting data");
-          }
+
           pushQuestion(data.question);
           form.reset({ question: "" });
-            requestResponse(data.question).then(ans => {
-                if (ans) {
-                    pushAnswer(ans.output);
-                } else {
-                    pushAnswer("Sorry, I don't understand your question.");
-                }
+
+          await requestResponse(data.question)
+            .then((ans) => {
+              pushAnswer(ans.output);
+              messageSubmission(
+                sessionId,
+                userInfo.email,
+                ChatMessageType.ANSWER,
+                data.question,
+              );
             })
+            .catch(() =>
+              pushAnswer("Sorry, something went wrong. Try again later."),
+            );
         })}
         className={"container w-full p-3 space-y-4"}
       >
