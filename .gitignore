@@ -1,6 +1,6 @@
 .idea
 resources
 **/node_modules
-/nlpTesting/cache
+/qa-chatbot/cache
 
 **/*/data.json
