@@ -19,8 +19,9 @@ import { Dispatch, SetStateAction } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
-import response from "@/lib/chatbox/requestResponse";
 import requestResponse from "@/lib/chatbox/requestResponse";
+import { messageSubmission } from "@/lib/chatbox/messageSubmission";
+import { ChatMessageType } from "@prisma/client";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -44,12 +45,12 @@ export default function ContactForm({
   setUserInfo,
   setSessionId,
   pushQuestion,
-    pushAnswer
+  pushAnswer,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   setSessionId: (session_id: string) => void;
-    pushQuestion: (question: string) => void;
-    pushAnswer: (answer: string) => void;
+  pushQuestion: (question: string) => void;
+  pushAnswer: (answer: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -65,22 +66,29 @@ export default function ContactForm({
         onSubmit={form.handleSubmit(async (data) => {
           const res = await contactSubmission(data);
           // TODO: show an error state to client
-          if (!res) {
+          if (!res)
             return console.error("An error occurred while submitting data");
-          }
-            pushQuestion(data.question);
+
+          pushQuestion(data.question);
           setUserInfo({
             email: data.email,
             firstName: data.firstName,
           });
           setSessionId(res.chatSessions[0].id);
-          requestResponse(data.question).then((ans) => {
-            if (ans) {
+
+          await requestResponse(data.question)
+            .then((ans) => {
               pushAnswer(ans.output);
-            } else {
-              pushAnswer("Sorry, I don't understand your question." );
-            }
-          });
+              messageSubmission(
+                res.chatSessions[0].id,
+                data.email,
+                ChatMessageType.ANSWER,
+                data.question,
+              );
+            })
+            .catch(() =>
+              pushAnswer("Sorry, something went wrong. Try again later."),
+            );
         })}
         className={"container w-full p-3 space-y-4"}
       >
