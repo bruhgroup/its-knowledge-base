@@ -85,7 +85,7 @@ export default function MessageForm({
               <FormControl>
                 <Textarea
                   placeholder={"Enter your question here"}
-                  className={"resize-none"}
+                  className={"resize-none rounded"}
                   {...field}
                 />
               </FormControl>
@@ -96,8 +96,8 @@ export default function MessageForm({
             </FormItem>
           )}
         />
-        <Button type={"submit"} className={"w-full"}>
-          Ask Question
+        <Button type={"submit"} className={"w-full bg-green-800"}>
+          Ask Question ✉️
         </Button>
       </form>
     </Form>
