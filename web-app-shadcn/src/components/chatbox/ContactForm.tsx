@@ -92,7 +92,7 @@ export default function ContactForm({
             );
           });
         })}
-        className={"container w-full p-3 space-y-4"}
+        className={"container w-full p-5 space-y-4"}
       >
         <FormField
           control={form.control}
@@ -144,8 +144,8 @@ export default function ContactForm({
             </FormItem>
           )}
         />
-        <Button type={"submit"} className={"w-full"}>
-          Ask Question
+        <Button type={"submit"} className={"w-full bg-green-800"}>
+          Ask Question ✉️
         </Button>
       </form>
     </Form>
