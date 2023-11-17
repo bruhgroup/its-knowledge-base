@@ -7,27 +7,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/Icons";
+import { signIn, signOut } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm({
+  className,
+  action,
+  ...props
+}: UserAuthFormProps & { action: "signin" | "signout" }) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const searchParams = useSearchParams();
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
 
   return (
     <div className={cn("self-center", className)} {...props}>
       <Button
         variant="outline"
         type="button"
-        onClick={onSubmit}
+        onClick={() => {
+          setIsLoading(true);
+          action === "signin"
+            ? signIn("google", { callbackUrl })
+            : signOut({ callbackUrl });
+        }}
         disabled={isLoading}
       >
         {isLoading ? (
@@ -35,7 +40,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         ) : (
           <Icons.google className="mr-2 h-4 w-4" />
         )}{" "}
-        Login with Google
+        {action === "signin" ? "Login" : "Logout"} with Google
       </Button>
     </div>
   );

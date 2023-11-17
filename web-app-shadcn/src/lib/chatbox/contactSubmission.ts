@@ -29,7 +29,7 @@ export async function contactSubmission(
     return prisma.user.create({
       data: {
         email: data.email,
-        firstName: data.firstName,
+        name: data.firstName,
         chatSessions: _chatSession,
       },
       select: _select,

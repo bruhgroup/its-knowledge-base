@@ -46,7 +46,7 @@ export default async function HistoryPage() {
               <TableCell>{user.createdAt.toISOString()}</TableCell>
               <TableCell>{user.updatedAt.toISOString()}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.firstName}</TableCell>
+              <TableCell>{user.name}</TableCell>
               <TableCell>{user._count.chatSessions}</TableCell>
               <TableCell className="text-right">
                 <a href={`/history/${user.id}`}>View</a>
