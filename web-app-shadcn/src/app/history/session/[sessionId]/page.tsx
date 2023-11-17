@@ -15,10 +15,14 @@ export default async function SessionMessagesPage({
   params: { sessionId: string };
 }) {
   const messages = await getChatSessionMessages(params.sessionId);
-  console.log(messages[0]);
 
   return (
-    <div>
+    <>
+      <p>
+        {/* TODO: pagination for tables */}
+        You are currently viewing {messages.length}/{messages.length} messages
+        from session {params.sessionId}
+      </p>
       <Table>
         <TableCaption>
           Your chat messages for session {params.sessionId}
@@ -46,6 +50,6 @@ export default async function SessionMessagesPage({
           ))}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 }

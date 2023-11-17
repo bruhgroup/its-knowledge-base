@@ -4,6 +4,9 @@ import "./globals.css";
 import React from "react";
 import NavigationMenu from "@/components/NavigationMenu";
 import { SessionProvider } from "next-auth/react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +26,16 @@ export default function RootLayout({
         <SessionProvider>
           <div className="flex h-16 items-center px-4 border-b">
             <NavigationMenu />
-            <div className="ml-auto flex items-center">Login</div>
+            <Link
+            href="/authentication"
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "ml-auto flex items-center",
+            )}
+          >
+            Login
+          </Link>
           </div>
-
           {children}
         </SessionProvider>
       </body>
