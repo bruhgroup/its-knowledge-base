@@ -1,20 +1,26 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ChatMessageType } from "@prisma/client";
+import Image from "next/image";
+import loadingIcon from "@/public/loadingIcon.svg";
 
 export default function ChatMessage({
   type,
+  loaded,
   name,
   text,
 }: {
   type: ChatMessageType;
   name: string;
   text: string;
+  loaded: boolean;
 }) {
   if (type === ChatMessageType.QUESTION) {
     return (
       <div className={"flex items-end gap-2 justify-end"}>
         <div
-          className={"bg-gray-300 rounded-s-2xl rounded-tr-2xl p-3 break-all"}
+          className={
+            "bg-blue-400 rounded-s-2xl rounded-tr-2xl p-3 [word-break:break-word]"
+          }
         >
           <p>{text}</p>
         </div>
@@ -28,12 +34,20 @@ export default function ChatMessage({
   }
 
   return (
-    <div className={"flex items-center space-x-4"}>
+    <div className={"flex items-end gap-2 justify-start"}>
       <Avatar>
-        <AvatarFallback>ITS</AvatarFallback>
+        <AvatarFallback className={"bg-green-800 text-white"}>ITS</AvatarFallback>
       </Avatar>
-      <div className={"bg-gray-300 rounded-e-2xl rounded-tl-2xl p-3"}>
-        <p className={"font-medium"}>{text}</p>
+      <div
+        className={
+          "bg-gray-300 rounded-e-2xl rounded-tl-2xl p-3 [word-break:break-word]"
+        }
+      >
+        {loaded ? (
+          <p>{text}</p>
+        ) : (
+          <Image src={loadingIcon} alt={"Loading..."} />
+        )}
       </div>
     </div>
   );

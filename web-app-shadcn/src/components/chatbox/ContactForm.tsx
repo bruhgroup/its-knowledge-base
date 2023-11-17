@@ -19,7 +19,9 @@ import { Dispatch, SetStateAction } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
 import { UserInfoType } from "@/components/ChatboxForm";
-import response from "@/lib/chatbox/requestResponse";
+import requestResponse from "@/lib/chatbox/requestResponse";
+import { messageSubmission } from "@/lib/chatbox/messageSubmission";
+import { ChatMessageType } from "@prisma/client";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -42,11 +44,13 @@ export const ContactFormSchema = z.object({
 export default function ContactForm({
   setUserInfo,
   setSessionId,
-      pushMessages,
+  pushQuestion,
+  pushAnswer,
 }: {
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   setSessionId: (session_id: string) => void;
-    pushMessages: (question: string, answer : string) => void;
+  pushQuestion: (question: string) => void;
+  pushAnswer: (answer: string) => void;
 }) {
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
@@ -62,18 +66,33 @@ export default function ContactForm({
         onSubmit={form.handleSubmit(async (data) => {
           const res = await contactSubmission(data);
           // TODO: show an error state to client
-          if (!res) {
+          if (!res)
             return console.error("An error occurred while submitting data");
-          }
+
+          pushQuestion(data.question);
           setUserInfo({
             email: data.email,
             firstName: data.firstName,
           });
           setSessionId(res.chatSessions[0].id);
-          const answer = await response(data.question);
-          pushMessages(data.question, answer);
+
+          await requestResponse(data.question).then((ans) => {
+            if (!ans) {
+              return pushAnswer(
+                "Sorry, something went wrong. Try again later.",
+              );
+            }
+
+            pushAnswer(ans.output);
+            messageSubmission(
+              res.chatSessions[0].id,
+              data.email,
+              ChatMessageType.ANSWER,
+              ans.output,
+            );
+          });
         })}
-        className={"container w-full p-3 space-y-4"}
+        className={"container w-full p-5 space-y-4"}
       >
         <FormField
           control={form.control}
@@ -125,8 +144,8 @@ export default function ContactForm({
             </FormItem>
           )}
         />
-        <Button type={"submit"} className={"w-full"}>
-          Ask Question
+        <Button type={"submit"} className={"w-full bg-green-800"}>
+          Ask Question ✉️
         </Button>
       </form>
     </Form>
