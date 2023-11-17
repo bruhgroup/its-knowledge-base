@@ -24,7 +24,7 @@ export default function AuthenticationPage() {
       >
         <Image src={itsLogo} alt={"its-logo"} />
       </div>
-      <div className="flex h-1/2 w-full flex-col justify-center space-y-6 sm:w-[350px]">
+      <div className="flex flex-col justify-center h-1/2 lg:w-1/2 md:3/4 space-y-6">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Login</h1>
           <p className="text-sm text-muted-foreground">

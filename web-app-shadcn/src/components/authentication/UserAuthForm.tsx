@@ -23,7 +23,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className={cn("self-center", className)} {...props}>
       <Button
         variant="outline"
         type="button"
@@ -35,7 +35,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         ) : (
           <Icons.google className="mr-2 h-4 w-4" />
         )}{" "}
-        Google
+        Login with Google
       </Button>
     </div>
   );
