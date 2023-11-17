@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
-import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 const pages: Array<{ title: string; path: string }> = [
   {
