@@ -5,5 +5,9 @@ export default function HistoryLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return (
+    <section className={"container"}>
+      <div className={"flex flex-col my-5 items-center gap-5"}>{children}</div>
+    </section>
+  );
 }
