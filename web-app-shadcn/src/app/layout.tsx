@@ -31,7 +31,7 @@ export default async function RootLayout({
             <NavigationMenu />
             {session ? (
               <Link
-                href="/auth/logout"
+                href="/auth/logout?callbackUrl=/"
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "ml-auto flex items-center",
@@ -41,7 +41,7 @@ export default async function RootLayout({
               </Link>
             ) : (
               <Link
-                href="/auth/login"
+                href="/auth/login?callbackUrl=/"
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "ml-auto flex items-center",
