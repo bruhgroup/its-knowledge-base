@@ -17,7 +17,12 @@ export default async function SessionsPage({
   const sessions = await getChatSessions(params.userId, true);
 
   return (
-    <div>
+    <>
+      <p>
+        {/* TODO: pagination for tables */}
+        You are currently viewing {sessions.length}/{sessions.length} sessions
+        from user {params.userId}
+      </p>
       <Table>
         <TableCaption>Your chat session history</TableCaption>
         <TableHeader>
@@ -41,6 +46,6 @@ export default async function SessionsPage({
           ))}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 }

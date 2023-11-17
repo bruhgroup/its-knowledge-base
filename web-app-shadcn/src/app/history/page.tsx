@@ -12,10 +12,20 @@ import { getUsersWithSessions } from "@/lib/prisma/getUsers";
 export const dynamic = "force-dynamic";
 
 export default async function HistoryPage() {
-  const users = await getUsersWithSessions(true);
+  // const users = await getUsersWithSessions(true);
+  const users = [];
 
   return (
-    <div>
+    <>
+      <p>
+        {/* TODO: pagination for tables */}
+        You are currently viewing {users.length}/{users.length} users with chat
+        sessions
+      </p>
+      <p>
+        You can click on the "View User" button to view specific user sessions
+        and inspect their messages
+      </p>
       <Table>
         <TableCaption>All users with chat sessions</TableCaption>
         <TableHeader>
@@ -45,6 +55,6 @@ export default async function HistoryPage() {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 }
