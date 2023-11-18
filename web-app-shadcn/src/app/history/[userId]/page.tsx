@@ -8,20 +8,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getChatSessions } from "@/lib/prisma/getChatSessions";
+import { useServerSession } from "@/lib/authOptions";
 
 export default async function SessionsPage({
   params,
 }: {
   params: { userId: string };
 }) {
-  const sessions = await getChatSessions(params.userId, true);
+  const session = await useServerSession();
+  const sessions = await getChatSessions(params.userId, session, true);
 
   return (
     <>
       <p>
-        {/* TODO: pagination for tables */}
-        You are currently viewing {sessions.length}/{sessions.length} sessions
-        from user {params.userId}
+        You are currently viewing {sessions.length} sessions from user{" "}
+        {params.userId}
       </p>
       <Table>
         <TableCaption>Your chat session history</TableCaption>

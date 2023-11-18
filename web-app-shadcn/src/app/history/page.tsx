@@ -8,19 +8,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getUsersWithSessions } from "@/lib/prisma/getUsers";
-
-export const dynamic = "force-dynamic";
+import { useServerSession } from "@/lib/authOptions";
 
 export default async function HistoryPage() {
-  const users = await getUsersWithSessions(true);
+  const session = await useServerSession();
+  const users = await getUsersWithSessions(session, true);
 
   return (
     <>
-      <p>
-        {/* TODO: pagination for tables */}
-        You are currently viewing {users.length}/{users.length} users with chat
-        sessions
-      </p>
+      <p>You are currently viewing {users.length} users with chat sessions</p>
       <p>
         You can click on the &quot;View User&quot; button to view specific user
         sessions and inspect their messages

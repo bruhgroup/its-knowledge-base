@@ -8,20 +8,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getChatSessionMessages } from "@/lib/prisma/getChatSessions";
+import { useServerSession } from "@/lib/authOptions";
 
 export default async function SessionMessagesPage({
   params,
 }: {
   params: { sessionId: string };
 }) {
-  const messages = await getChatSessionMessages(params.sessionId);
+  const session = await useServerSession();
+  const messages = await getChatSessionMessages(params.sessionId, session);
 
   return (
     <>
       <p>
-        {/* TODO: pagination for tables */}
-        You are currently viewing {messages.length}/{messages.length} messages
-        from session {params.sessionId}
+        You are currently viewing {messages.length} messages from session{" "}
+        {params.sessionId}
       </p>
       <Table>
         <TableCaption>
