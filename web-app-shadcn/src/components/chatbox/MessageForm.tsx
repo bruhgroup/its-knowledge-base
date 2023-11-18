@@ -73,11 +73,11 @@ export default function MessageForm({
             sessionId,
             userInfo.email,
             ChatMessageType.ANSWER,
-            "hello",
+            response.output,
           );
           pushAnswer({
             id: userUpdate.chatSessions[0].chatMessages[0].id,
-            text: "hello",
+            text: response.output,
           });
         })}
         className={"container w-full p-3 space-y-4"}
