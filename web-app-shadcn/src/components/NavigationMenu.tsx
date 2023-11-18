@@ -25,20 +25,20 @@ export default function NavigationMenu() {
       <Link
         href={"/"}
         className={
-          "text-lg font-medium transition-colors text-black hover:text-black/80"
+          "text-3xl font-medium transition-colors text-white hover:underline"
         }
       >
-        AskUs
+        AskUs🌈
       </Link>
       {pages.map((page, index) => (
         <Link
           key={index}
           href={page.path}
           className={cn(
-            "text-sm font-medium transition-colors hover:text-black/80",
+            "text-md font-medium transition-colors hover:underline",
             page.path.startsWith(`/${segment}`)
-              ? "text-black"
-              : "text-black/60",
+              ? "text-white"
+              : "text-white",
           )}
         >
           {page.title}
