@@ -38,8 +38,8 @@ export default async function HistoryPage() {
           {users.map((user, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{user.id}</TableCell>
-              <TableCell>{user.createdAt.toISOString()}</TableCell>
-              <TableCell>{user.updatedAt.toISOString()}</TableCell>
+              <TableCell>{user.createdAt.toUTCString()}</TableCell>
+              <TableCell>{user.updatedAt.toUTCString()}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user._count.chatSessions}</TableCell>

@@ -42,7 +42,7 @@ export default async function SessionMessagesPage({
           {messages.map((message, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{message.id}</TableCell>
-              <TableCell>{message.createdAt.toISOString()}</TableCell>
+              <TableCell>{message.createdAt.toUTCString()}</TableCell>
               <TableCell>{message.type}</TableCell>
               <TableCell>{message.message}</TableCell>
               <TableCell className="text-right">
