@@ -14,7 +14,9 @@ export async function getChatSessions(
       userId: user_id,
       user: {
         email:
-          session?.user?.role === UserRole.USER ? session?.user.email : null,
+          session?.user?.role === UserRole.USER
+            ? session?.user.email
+            : undefined,
       },
     },
     include: { _count: { select: { chatMessages: countMessages } } },
@@ -37,9 +39,13 @@ export async function getChatSessionMessages(
   return prisma.chatMessage.findMany({
     where: {
       chatSessionId: session_id,
-      user: {
-        email:
-          session?.user?.role === UserRole.USER ? session?.user.email : null,
+      chatSession: {
+        user: {
+          email:
+            session?.user?.role === UserRole.USER
+              ? session?.user.email
+              : undefined,
+        },
       },
     },
   });
