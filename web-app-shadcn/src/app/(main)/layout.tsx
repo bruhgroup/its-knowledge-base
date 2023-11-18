@@ -20,7 +20,7 @@ export default async function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
-          <div className="flex h-20 items-center px-4 bg-green-900 overflow-y-scroll">
+          <div className="flex h-20 items-center px-4 bg-green-900 overflow-auto">
             <NavigationMenu />
             {session ? (
               <Link
