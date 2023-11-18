@@ -8,9 +8,8 @@ import * as z from "zod";
 import MessageForm from "@/components/chatbox/MessageForm";
 import ChatMessage from "@/components/chatbox/ChatMessage";
 import { ChatMessageType } from "@prisma/client";
-import messageIcon from "@/public/chat-fill.svg";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { MessagesSquare } from "lucide-react";
 
 export type UserInfoType = Omit<z.infer<typeof ContactFormSchema>, "question">;
 
@@ -28,16 +27,10 @@ export default function ChatboxForm() {
           "bg-green-800 h-[3em] flex items-center justify-center rounded-t"
         }
       >
-        <span className={"font-semibold text-white"}>
-          <Image
-            src={messageIcon}
-            className={"invert pr-1 inline"}
-            width={25}
-            height={25}
-            alt={"message icon"}
-          />
-          How can we help you?
-        </span>
+        <div className={"flex flex-row font-semibold text-white gap-2"}>
+          <MessagesSquare height={25} width={25} fill={"white"} />
+          <p>How can we help you?</p>
+        </div>
       </div>
       {/*TODO: handle when userInfo / sessionId is invalid*/}
       {userInfo && sessionId ? (
@@ -48,7 +41,7 @@ export default function ChatboxForm() {
                 <ChatMessage
                   type={ChatMessageType.ANSWER}
                   name={"ITS"}
-                  text={`Aloha, ${userInfo.firstName}🌺! I am a virtual assistant. What can I help you with today?`}
+                  text={`Aloha, ${userInfo.name}🌺! I am a virtual assistant. What can I help you with today?`}
                   loaded={true}
                 />
               </div>
@@ -58,7 +51,7 @@ export default function ChatboxForm() {
                     <div className={"scroller-item"}>
                       <ChatMessage
                         type={ChatMessageType.QUESTION}
-                        name={userInfo.firstName}
+                        name={userInfo.name}
                         text={question}
                         image={session.data?.user?.image}
                         loaded={true}
