@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Dispatch, SetStateAction } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { contactSubmission } from "@/lib/chatbox/contactSubmission";
-import { UserInfoType } from "@/components/ChatboxForm";
+import { UserInfoType } from "@/components/chatbox/ChatboxForm";
 import requestResponse from "@/lib/chatbox/requestResponse";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 import { ChatMessageType } from "@prisma/client";

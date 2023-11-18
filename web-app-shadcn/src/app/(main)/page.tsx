@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import ChatboxState from "@/components/ChatboxState";
+import ChatboxState from "@/components/chatbox/ChatboxState";
 
 export default function HomePage() {
   // TODO: fetch data from an API
