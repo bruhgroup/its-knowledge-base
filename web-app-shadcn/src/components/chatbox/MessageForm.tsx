@@ -18,6 +18,7 @@ import { UserInfoType } from "@/components/chatbox/ChatboxForm";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 import requestResponse from "@/lib/chatbox/requestResponse";
 import { ChatMessageType } from "@prisma/client";
+import { SendHorizontal } from "lucide-react";
 
 export const MessageFormSchema = z.object({
   question: z
@@ -97,7 +98,7 @@ export default function MessageForm({
           )}
         />
         <Button type={"submit"} className={"w-full bg-green-800"}>
-          Ask Question ✉️
+          <SendHorizontal width={20} height={20} />
         </Button>
       </form>
     </Form>
