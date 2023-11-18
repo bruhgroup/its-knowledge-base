@@ -14,6 +14,10 @@ const pages: Array<{ title: string; path: string }> = [
     title: "Chatbox",
     path: "/chatbox",
   },
+  {
+    title: "Demo",
+    path: "/demo",
+  },
 ];
 
 export default function NavigationMenu() {
@@ -37,7 +41,7 @@ export default function NavigationMenu() {
           className={cn(
             "text-md font-medium transition-colors hover:underline",
             page.path.startsWith(`/${segment}`)
-              ? "text-white"
+              ? "text-white/80"
               : "text-white",
           )}
         >
