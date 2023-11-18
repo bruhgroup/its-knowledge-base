@@ -21,5 +21,6 @@ export async function getUsersWithSessions(
   return prisma.user.findMany({
     where,
     include: { _count: { select: { chatSessions: countSessions } } },
+    orderBy: { updatedAt: "asc" },
   });
 }

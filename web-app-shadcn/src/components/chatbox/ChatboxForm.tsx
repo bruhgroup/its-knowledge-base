@@ -21,7 +21,6 @@ export default function ChatboxForm() {
     [],
   );
   const session = useSession();
-  console.log(answers);
 
   return (
     <>

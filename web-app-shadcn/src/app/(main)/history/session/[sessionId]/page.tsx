@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { getChatSessionMessages } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
+import { MessageRatingEnum } from "@/lib/utils";
 
 export default async function SessionMessagesPage({
   params,
@@ -45,7 +46,9 @@ export default async function SessionMessagesPage({
               <TableCell>{message.type}</TableCell>
               <TableCell>{message.message}</TableCell>
               <TableCell className="text-right">
-                {message.rating ?? "N/A"}
+                {message.rating !== null
+                  ? MessageRatingEnum[message.rating]
+                  : "N/A"}
               </TableCell>
             </TableRow>
           ))}
