@@ -17,8 +17,11 @@ export default function ChatboxForm() {
   const [userInfo, setUserInfo] = useState<UserInfoType>();
   const [sessionId, setSessionId] = useState<string>();
   const [questions, setQuestions] = useState<Array<string>>([]);
-  const [answers, setAnswers] = useState<Array<string>>([]);
+  const [answers, setAnswers] = useState<Array<{ id: string; text: string }>>(
+    [],
+  );
   const session = useSession();
+  console.log(answers);
 
   return (
     <>
@@ -43,6 +46,7 @@ export default function ChatboxForm() {
                   name={"ITS"}
                   text={`Aloha, ${userInfo.name}🌺! I am a virtual assistant. What can I help you with today?`}
                   loaded={true}
+                  allowRatings={false}
                 />
               </div>
               {questions.map((question, index) => {
@@ -61,7 +65,8 @@ export default function ChatboxForm() {
                       <ChatMessage
                         type={ChatMessageType.ANSWER}
                         name={"ITS"}
-                        text={answers[index]}
+                        text={answers[index]?.text}
+                        id={answers[index]?.id}
                         loaded={answers[index] !== undefined}
                       />
                     </div>
@@ -71,15 +76,15 @@ export default function ChatboxForm() {
             </div>
           </div>
 
-          {/*TODO: handle if question is not set*/}
-          {/*TODO: handle if question is only spaces*/}
           <MessageForm
             userInfo={userInfo}
             sessionId={sessionId}
             pushQuestion={(question: string) =>
               setQuestions([...questions, question])
             }
-            pushAnswer={(answer: string) => setAnswers([...answers, answer])}
+            pushAnswer={(answer: { id: string; text: string }) =>
+              setAnswers([...answers, answer])
+            }
           />
         </>
       ) : (
@@ -88,7 +93,9 @@ export default function ChatboxForm() {
           pushQuestion={(question: string) =>
             setQuestions([...questions, question])
           }
-          pushAnswer={(answer: string) => setAnswers([...answers, answer])}
+          pushAnswer={(answer: { id: string; text: string }) =>
+            setAnswers([...answers, answer])
+          }
           setSessionId={setSessionId}
         />
       )}

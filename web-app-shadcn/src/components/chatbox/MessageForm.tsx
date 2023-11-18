@@ -37,7 +37,7 @@ export default function MessageForm({
   userInfo: UserInfoType;
   sessionId: string;
   pushQuestion: (question: string) => void;
-  pushAnswer: (answer: string) => void;
+  pushAnswer: (answer: { id: string; text: string }) => void;
 }) {
   const form = useForm<z.infer<typeof MessageFormSchema>>({
     resolver: zodResolver(MessageFormSchema),
@@ -54,26 +54,30 @@ export default function MessageForm({
             data.question,
           );
           // TODO: show an error state to client
-          if (!res)
+          if (!res) {
             return console.error("An error occurred while submitting data");
+          }
 
           pushQuestion(data.question);
           form.reset({ question: "" });
 
-          await requestResponse(data.question).then((ans) => {
-            if (!ans) {
-              return pushAnswer(
-                "Sorry, something went wrong. Try again later.",
-              );
-            }
+          const response = await requestResponse(data.question);
+          if (!response) {
+            return pushAnswer({
+              id: "0",
+              text: "Sorry, something went wrong. Try again later.",
+            });
+          }
 
-            pushAnswer(ans.output);
-            messageSubmission(
-              sessionId,
-              userInfo.email,
-              ChatMessageType.ANSWER,
-              ans.output,
-            );
+          const userUpdate = await messageSubmission(
+            sessionId,
+            userInfo.email,
+            ChatMessageType.ANSWER,
+            "hello",
+          );
+          pushAnswer({
+            id: userUpdate.chatSessions[0].chatMessages[0].id,
+            text: "hello",
           });
         })}
         className={"container w-full p-3 space-y-4"}

@@ -51,7 +51,7 @@ export default function ContactForm({
   setUserInfo: Dispatch<SetStateAction<UserInfoType | undefined>>;
   setSessionId: (session_id: string) => void;
   pushQuestion: (question: string) => void;
-  pushAnswer: (answer: string) => void;
+  pushAnswer: (answer: { id: string; text: string }) => void;
 }) {
   const session = useSession();
   const form = useForm<z.infer<typeof ContactFormSchema>>({
@@ -79,20 +79,23 @@ export default function ContactForm({
           });
           setSessionId(res.chatSessions[0].id);
 
-          await requestResponse(data.question).then((ans) => {
-            if (!ans) {
-              return pushAnswer(
-                "Sorry, something went wrong. Try again later.",
-              );
-            }
+          const response = await requestResponse(data.question);
+          if (!response) {
+            return pushAnswer({
+              id: "0",
+              text: "Sorry, something went wrong. Try again later.",
+            });
+          }
 
-            pushAnswer(ans.output);
-            messageSubmission(
-              res.chatSessions[0].id,
-              data.email,
-              ChatMessageType.ANSWER,
-              ans.output,
-            );
+          const userUpdate = await messageSubmission(
+            res.chatSessions[0].id,
+            data.email,
+            ChatMessageType.ANSWER,
+            response.output,
+          );
+          pushAnswer({
+            id: userUpdate.chatSessions[0].chatMessages[0].id,
+            text: response.output,
           });
         })}
         className={"container w-full p-5 space-y-4"}

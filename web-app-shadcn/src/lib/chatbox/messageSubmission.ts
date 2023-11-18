@@ -27,5 +27,13 @@ export async function messageSubmission(
         },
       },
     },
+    select: {
+      chatSessions: {
+        take: -1,
+        select: {
+          chatMessages: { take: -1 },
+        },
+      },
+    },
   });
 }
