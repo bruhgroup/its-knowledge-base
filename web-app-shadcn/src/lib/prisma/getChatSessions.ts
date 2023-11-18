@@ -20,6 +20,7 @@ export async function getChatSessions(
       },
     },
     include: { _count: { select: { chatMessages: countMessages } } },
+    orderBy: { createdAt: "asc" },
   });
 }
 
@@ -48,5 +49,6 @@ export async function getChatSessionMessages(
         },
       },
     },
+    orderBy: { createdAt: "asc" },
   });
 }
