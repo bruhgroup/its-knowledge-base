@@ -7,9 +7,10 @@ import type {
   NextApiResponse,
 } from "next";
 import GoogleProvider from "next-auth/providers/google";
+import { UserRole } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -27,10 +28,21 @@ export const authOptions: AuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          role: JSON.parse(process.env.ADMIN_EMAILS ?? "[]").includes(
+            profile.email,
+          )
+            ? UserRole.ADMIN
+            : UserRole.USER,
         };
       },
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      if (session.user) session.user.role = user.role;
+      return session;
+    },
+  },
   pages: {
     signIn: "/auth/login",
     signOut: "/auth/logout",
