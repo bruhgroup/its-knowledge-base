@@ -5,5 +5,5 @@ export default function ChatboxLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return <section className={"container py-5"}>{children}</section>;
 }

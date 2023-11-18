@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
 import NavigationMenu from "@/components/NavigationMenu";
@@ -9,11 +8,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { useServerSession } from "@/lib/authOptions";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "its-knowledge-base",
-  description: "AI Knowledge Base",
-};
 
 export default async function RootLayout({
   children,
@@ -26,14 +20,14 @@ export default async function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
-          <div className="flex h-20 items-center px-4 bg-green-900">
+          <div className="flex h-20 items-center px-4 bg-green-900 overflow-y-scroll">
             <NavigationMenu />
             {session ? (
               <Link
                 href="/auth/logout?callbackUrl=/"
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "ml-auto flex items-center",
+                  "text-md ml-auto flex items-center text-white hover:underline",
                 )}
               >
                 Logout
@@ -43,7 +37,7 @@ export default async function RootLayout({
                 href="/auth/login?callbackUrl=/"
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "ml-auto flex items-center text-white hover:underline",
+                  "text-md ml-auto flex items-center text-white hover:underline",
                 )}
               >
                 Login
