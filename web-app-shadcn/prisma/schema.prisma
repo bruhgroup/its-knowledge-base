@@ -65,7 +65,7 @@ model ChatMessage {
 
   type    ChatMessageType
   message String
-  rating  Boolean?
+  rating  Int? // 0 (downvote), 1 (upvote), undefined (none)
 
   @@map("messages")
 }
