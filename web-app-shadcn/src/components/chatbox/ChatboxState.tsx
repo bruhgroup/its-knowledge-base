@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ChatboxForm from "@/components/chatbox/ChatboxForm";
-import messageIcon from "@/public/chat-fill.svg";
-import Image from "next/image";
+import { MessagesSquare } from "lucide-react";
 
 export default function ChatboxState() {
   const [chatbox, setChatbox] = useState<boolean>(false);
@@ -30,14 +29,10 @@ export default function ChatboxState() {
         onClick={() => setChatbox(!chatbox)}
         className={"shadow-2xl max-w-fit rounded bg-green-800"}
       >
-        <Image
-          src={messageIcon}
-          className={"invert pr-1"}
-          width={20}
-          height={20}
-          alt={"message icon"}
-        />{" "}
-        Chat With Us
+        <div className={"flex flex-row gap-2"}>
+          <MessagesSquare height={20} width={20} fill={"white"} />
+          <p>Chat With Us</p>
+        </div>
       </Button>
     </div>
   );
