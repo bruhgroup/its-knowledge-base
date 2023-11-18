@@ -23,6 +23,7 @@ import requestResponse from "@/lib/chatbox/requestResponse";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 import { ChatMessageType } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import { SendHorizontal } from "lucide-react";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -151,7 +152,7 @@ export default function ContactForm({
           )}
         />
         <Button type={"submit"} className={"w-full bg-green-800"}>
-          Ask Question ✉️
+          <SendHorizontal width={20} height={20} />
         </Button>
       </form>
     </Form>
