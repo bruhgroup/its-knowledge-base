@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChatMessageType } from "@prisma/client";
 import Image from "next/image";
 import loadingIcon from "@/public/loadingIcon.svg";
@@ -8,11 +8,13 @@ export default function ChatMessage({
   loaded,
   name,
   text,
+  image,
 }: {
   type: ChatMessageType;
+  loaded: boolean;
   name: string;
   text: string;
-  loaded: boolean;
+  image?: string | null;
 }) {
   if (type === ChatMessageType.QUESTION) {
     return (
@@ -25,6 +27,7 @@ export default function ChatMessage({
           <p>{text}</p>
         </div>
         <Avatar className={"mb-1"}>
+          {image && <AvatarImage src={image} />}
           <AvatarFallback className={"text-white bg-black"}>
             {name.substring(0, 2).toUpperCase()}
           </AvatarFallback>
@@ -36,7 +39,9 @@ export default function ChatMessage({
   return (
     <div className={"flex items-end gap-2 justify-start"}>
       <Avatar>
-        <AvatarFallback className={"bg-green-800 text-white"}>ITS</AvatarFallback>
+        <AvatarFallback className={"bg-green-800 text-white"}>
+          ITS
+        </AvatarFallback>
       </Avatar>
       <div
         className={

@@ -10,6 +10,7 @@ import ChatMessage from "@/components/ChatMessage";
 import { ChatMessageType } from "@prisma/client";
 import messageIcon from "@/public/chat-fill.svg";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export type UserInfoType = Omit<z.infer<typeof ContactFormSchema>, "question">;
 
@@ -18,12 +19,23 @@ export default function ChatboxForm() {
   const [sessionId, setSessionId] = useState<string>();
   const [questions, setQuestions] = useState<Array<string>>([]);
   const [answers, setAnswers] = useState<Array<string>>([]);
+  const session = useSession();
 
   return (
     <>
-      <div className={"bg-green-800 h-[3em] flex items-center justify-center rounded-t"}>
+      <div
+        className={
+          "bg-green-800 h-[3em] flex items-center justify-center rounded-t"
+        }
+      >
         <span className={"font-semibold text-white"}>
-          <Image src={messageIcon} className={"invert pr-1 inline"} width={25} height={25} alt={"message icon"} />
+          <Image
+            src={messageIcon}
+            className={"invert pr-1 inline"}
+            width={25}
+            height={25}
+            alt={"message icon"}
+          />
           How can we help you?
         </span>
       </div>
@@ -48,6 +60,7 @@ export default function ChatboxForm() {
                         type={ChatMessageType.QUESTION}
                         name={userInfo.firstName}
                         text={question}
+                        image={session.data?.user?.image}
                         loaded={true}
                       />
                     </div>
