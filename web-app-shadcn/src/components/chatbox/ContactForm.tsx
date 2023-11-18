@@ -22,6 +22,7 @@ import { UserInfoType } from "@/components/chatbox/ChatboxForm";
 import requestResponse from "@/lib/chatbox/requestResponse";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 import { ChatMessageType } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 export const ContactFormSchema = z.object({
   question: z
@@ -34,11 +35,11 @@ export const ContactFormSchema = z.object({
     .trim()
     .min(6, "Your email is too short!")
     .max(64, "Your email is too long!"),
-  firstName: z
+  name: z
     .string()
     .trim()
-    .min(1, "Your first name is too short!")
-    .max(32, "Your first name is too long!"),
+    .min(1, "Your name is too short!")
+    .max(32, "Your name is too long!"),
 });
 
 export default function ContactForm({
@@ -52,11 +53,12 @@ export default function ContactForm({
   pushQuestion: (question: string) => void;
   pushAnswer: (answer: string) => void;
 }) {
+  const session = useSession();
   const form = useForm<z.infer<typeof ContactFormSchema>>({
     resolver: zodResolver(ContactFormSchema),
     defaultValues: {
-      email: "",
-      firstName: "",
+      email: session.data?.user?.email ?? "",
+      name: session.data?.user?.name ?? "",
     },
   });
 
@@ -66,13 +68,14 @@ export default function ContactForm({
         onSubmit={form.handleSubmit(async (data) => {
           const res = await contactSubmission(data);
           // TODO: show an error state to client
-          if (!res)
+          if (!res) {
             return console.error("An error occurred while submitting data");
+          }
 
           pushQuestion(data.question);
           setUserInfo({
             email: data.email,
-            firstName: data.firstName,
+            name: data.name,
           });
           setSessionId(res.chatSessions[0].id);
 
@@ -113,7 +116,7 @@ export default function ContactForm({
         />
         <FormField
           control={form.control}
-          name={"firstName"}
+          name={"name"}
           render={({ field }) => (
             <FormItem>
               <FormLabel>First Name</FormLabel>
