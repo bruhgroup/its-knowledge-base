@@ -38,7 +38,7 @@ export default async function SessionsPage({
           {sessions.map((session, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{session.id}</TableCell>
-              <TableCell>{session.createdAt.toISOString()}</TableCell>
+              <TableCell>{session.createdAt.toUTCString()}</TableCell>
               <TableCell>{session._count.chatMessages}</TableCell>
               <TableCell className="text-right">
                 <a href={`/history/session/${session.id}`}>🡺</a>
