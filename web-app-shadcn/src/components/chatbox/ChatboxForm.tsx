@@ -6,7 +6,7 @@ import ContactForm, {
 import { useState } from "react";
 import * as z from "zod";
 import MessageForm from "@/components/chatbox/MessageForm";
-import ChatMessage from "@/components/ChatMessage";
+import ChatMessage from "@/components/chatbox/ChatMessage";
 import { ChatMessageType } from "@prisma/client";
 import messageIcon from "@/public/chat-fill.svg";
 import Image from "next/image";

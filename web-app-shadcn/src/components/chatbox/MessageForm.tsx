@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { UserInfoType } from "@/components/ChatboxForm";
+import { UserInfoType } from "@/components/chatbox/ChatboxForm";
 import { messageSubmission } from "@/lib/chatbox/messageSubmission";
 import requestResponse from "@/lib/chatbox/requestResponse";
 import { ChatMessageType } from "@prisma/client";

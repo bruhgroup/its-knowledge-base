@@ -1,4 +1,4 @@
-import ChatboxForm from "@/components/ChatboxForm";
+import ChatboxForm from "@/components/chatbox/ChatboxForm";
 
 export default function ChatboxPage() {
   return (
