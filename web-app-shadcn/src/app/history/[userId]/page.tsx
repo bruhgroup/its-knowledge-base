@@ -41,7 +41,7 @@ export default async function SessionsPage({
               <TableCell>{session.createdAt.toISOString()}</TableCell>
               <TableCell>{session._count.chatMessages}</TableCell>
               <TableCell className="text-right">
-                <a href={`/history/session/${session.id}`}>Arrow</a>
+                <a href={`/history/session/${session.id}`}>➜</a>
               </TableCell>
             </TableRow>
           ))}
