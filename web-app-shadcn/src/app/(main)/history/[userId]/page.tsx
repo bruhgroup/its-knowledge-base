@@ -9,8 +9,8 @@ import {
 import { getChatSessions } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
 import SessionRows from "@/components/history/SessionsRows";
-import { UserRole } from "@prisma/client";
 import React from "react";
+import DirectoryNavigator from "@/components/history/DirectoryNavigator";
 
 export default async function SessionsPage({
   params,
@@ -22,11 +22,7 @@ export default async function SessionsPage({
 
   return (
     <>
-      {session?.user?.role === UserRole.ADMIN && (
-        <h1 className={"font-bold border-b-2 border-b-gray-500"}>
-          Viewing user {params.userId}
-        </h1>
-      )}
+      <DirectoryNavigator userId={params.userId} />
       <p>You are currently viewing {sessions.length} chat sessions.</p>
       <p>
         You can click on the &quot;View Messages&quot; button to view your
