@@ -2,7 +2,6 @@ import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -10,10 +9,20 @@ import {
 import { getUsersWithSessions } from "@/lib/prisma/getUsers";
 import { useServerSession } from "@/lib/authOptions";
 import UsersRows from "@/components/history/UsersRows";
+import { UserRole } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export default async function HistoryPage() {
   const session = await useServerSession();
   const users = await getUsersWithSessions(session, true);
+
+  if (session?.user?.role === UserRole.USER) {
+    if (users.length === 0)
+      return (
+        <p>You have not started a chat yet. Try again after creating one.</p>
+      );
+    else redirect(`/history/${users[0].id}`);
+  }
 
   return (
     <>

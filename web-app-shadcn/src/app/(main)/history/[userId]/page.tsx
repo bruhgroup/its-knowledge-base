@@ -2,15 +2,15 @@ import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { getChatSessions } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
-import { redirect } from "next/navigation";
 import SessionRows from "@/components/history/SessionsRows";
+import { UserRole } from "@prisma/client";
+import React from "react";
 
 export default async function SessionsPage({
   params,
@@ -22,10 +22,16 @@ export default async function SessionsPage({
 
   return (
     <>
+      {session?.user?.role === UserRole.ADMIN && (
+        <h1 className={"font-bold border-b-2 border-b-gray-500"}>
+          Viewing user {params.userId}
+        </h1>
+      )}
+      <p>You are currently viewing {sessions.length} chat sessions.</p>
       <p>
-        You are currently viewing {sessions.length} sessions from user{" "}
-        {params.userId}
-      </p>
+        You can click on the &quot;View Messages&quot; button to view your
+        messages in that session.
+      </p>{" "}
       <Table>
         <TableCaption>Your chat session history</TableCaption>
         <TableHeader>
