@@ -6,6 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { useServerSession } from "@/lib/authOptions";
+import { LogoutButton } from "@/components/authentication/LogoutButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,15 +24,11 @@ export default async function RootLayout({
           <div className="flex h-20 items-center px-4 bg-green-900 overflow-auto">
             <NavigationMenu />
             {session ? (
-              <Link
-                href="/auth/logout?callbackUrl=/"
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "text-md ml-auto flex items-center text-white hover:underline",
-                )}
-              >
-                Logout
-              </Link>
+              <LogoutButton
+                className={
+                  "text-md ml-auto flex items-center text-white hover:underline"
+                }
+              />
             ) : (
               <Link
                 href="/auth/login?callbackUrl=/"
