@@ -12,6 +12,7 @@ import { useServerSession } from "@/lib/authOptions";
 import { MessageRatingEnum } from "@/lib/utils";
 import { UserRole } from "@prisma/client";
 import React from "react";
+import DirectoryNavigator from "@/components/history/DirectoryNavigator";
 
 export default async function SessionMessagesPage({
   params,
@@ -23,11 +24,7 @@ export default async function SessionMessagesPage({
 
   return (
     <>
-      {session?.user?.role === UserRole.ADMIN && (
-        <h1 className={"font-bold border-b-2 border-b-gray-500"}>
-          Viewing user {params.userId}
-        </h1>
-      )}
+      <DirectoryNavigator userId={params.userId} sessionId={params.sessionId} />
       <p>
         You are currently viewing {messages.length} messages from session{" "}
         {params.sessionId}
