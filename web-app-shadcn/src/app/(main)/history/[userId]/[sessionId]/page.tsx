@@ -10,6 +10,8 @@ import {
 import { getChatSessionMessages } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
 import { MessageRatingEnum } from "@/lib/utils";
+import { router } from "next/client";
+import { redirect } from "next/navigation";
 
 export default async function SessionMessagesPage({
   params,
