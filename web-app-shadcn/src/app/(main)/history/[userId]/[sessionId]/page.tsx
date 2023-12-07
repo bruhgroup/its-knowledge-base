@@ -10,19 +10,24 @@ import {
 import { getChatSessionMessages } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
 import { MessageRatingEnum } from "@/lib/utils";
-import { router } from "next/client";
-import { redirect } from "next/navigation";
+import { UserRole } from "@prisma/client";
+import React from "react";
 
 export default async function SessionMessagesPage({
   params,
 }: {
-  params: { sessionId: string };
+  params: { userId: string; sessionId: string };
 }) {
   const session = await useServerSession();
   const messages = await getChatSessionMessages(params.sessionId, session);
 
   return (
     <>
+      {session?.user?.role === UserRole.ADMIN && (
+        <h1 className={"font-bold border-b-2 border-b-gray-500"}>
+          Viewing user {params.userId}
+        </h1>
+      )}
       <p>
         You are currently viewing {messages.length} messages from session{" "}
         {params.sessionId}
