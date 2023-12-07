@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { getUsersWithSessions } from "@/lib/prisma/getUsers";
 import { useServerSession } from "@/lib/authOptions";
+import UsersRows from "@/components/history/UsersRows";
 
 export default async function HistoryPage() {
   const session = await useServerSession();
@@ -35,19 +36,7 @@ export default async function HistoryPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user, index) => (
-            <TableRow key={index}>
-              <TableCell className="font-medium">{user.id}</TableCell>
-              <TableCell>{user.createdAt.toUTCString()}</TableCell>
-              <TableCell>{user.updatedAt.toUTCString()}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user._count.chatSessions}</TableCell>
-              <TableCell className="text-right">
-                <a href={`/history/${user.id}`}>View</a>
-              </TableCell>
-            </TableRow>
-          ))}
+          <UsersRows users={users} />
         </TableBody>
       </Table>
     </>

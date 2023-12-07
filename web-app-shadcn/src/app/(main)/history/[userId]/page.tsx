@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { getChatSessions } from "@/lib/prisma/getChatSessions";
 import { useServerSession } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
+import SessionRows from "@/components/history/SessionsRows";
 
 export default async function SessionsPage({
   params,
@@ -31,20 +33,11 @@ export default async function SessionsPage({
             <TableHead className="w-[100px]">Session ID</TableHead>
             <TableHead>Time Created</TableHead>
             <TableHead>Message Count</TableHead>
-            <TableHead className="text-right">See Messages</TableHead>
+            <TableHead className="text-right">View Messages</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sessions.map((session, index) => (
-            <TableRow key={index}>
-              <TableCell className="font-medium">{session.id}</TableCell>
-              <TableCell>{session.createdAt.toUTCString()}</TableCell>
-              <TableCell>{session._count.chatMessages}</TableCell>
-              <TableCell className="text-right">
-                <a href={`/history/session/${session.id}`}>🡺</a>
-              </TableCell>
-            </TableRow>
-          ))}
+          <SessionRows userId={params.userId} sessions={sessions} />
         </TableBody>
       </Table>
     </>
