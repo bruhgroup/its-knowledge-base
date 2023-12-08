@@ -2,21 +2,22 @@ import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 import { statsMessageRatings } from "@/lib/prisma/queries/messageRating";
-import GeneratedCharts, {
-  LabelAndData,
-} from "@/components/analytics/GeneratedCharts";
 import { useServerSession } from "@/lib/authOptions";
 import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getLatestQuestions } from "@/lib/prisma/queries/chatSessions";
+import {
+  getLatestQuestions,
+  getSessionElapsedTimes,
+} from "@/lib/prisma/queries/chatSessions";
 import QuestionsRows from "@/components/analytics/QuestionsRows";
+import GeneratedCharts from "@/components/analytics/GeneratedCharts";
+import { LabelsAndData } from "@/lib/analytics/generateChartData";
 
 const ratingLookup: { [key: number]: string } = {
   0: "downvote",
@@ -31,10 +32,27 @@ export default async function AnalyticsPage() {
     return redirect("/");
   }
 
-  const [ratings, questions] = await Promise.all([
+  const [ratings, questions, elapsedTimes] = await Promise.all([
     statsMessageRatings(),
     getLatestQuestions(5),
+    getSessionElapsedTimes(),
   ]);
+
+  // Accumulate the count of times each session has taken.
+  const accumulateElapsedTimes = elapsedTimes.reduce(
+    (accumulator: { [key: string]: number }, number) => {
+      if (number == null) return accumulator;
+      const half_minute = Math.floor(number / 30);
+      accumulator[half_minute] = (accumulator[half_minute] || 0) + 1;
+      return accumulator;
+    },
+    {},
+  );
+
+  // Sort the elapsed times in order
+  const sortedElapsedTimeKeys = Object.keys(accumulateElapsedTimes)
+    .map(Number)
+    .sort((a, b) => a - b);
 
   return (
     <>
@@ -49,7 +67,15 @@ export default async function AnalyticsPage() {
               accumulator.data.push(_count);
               return accumulator;
             },
-            { labels: [], data: [] } as LabelAndData,
+            { labels: [], data: [] } as LabelsAndData,
+          )}
+          elapsedTimes={sortedElapsedTimeKeys.reduce(
+            (accumulator, key) => {
+              accumulator.labels.push(String(key));
+              accumulator.data.push(accumulateElapsedTimes[key]);
+              return accumulator;
+            },
+            { labels: [], data: [] } as LabelsAndData,
           )}
         />
         <div className={"border border-gray-400 rounded-xl shadow-lg p-3"}>
