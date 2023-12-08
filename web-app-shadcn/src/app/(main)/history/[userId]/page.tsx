@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getChatSessions } from "@/lib/prisma/getChatSessions";
+import { chatSessions } from "@/lib/prisma/queries/chatSessions";
 import { useServerSession } from "@/lib/authOptions";
 import SessionRows from "@/components/history/SessionsRows";
 import React from "react";
@@ -18,7 +18,7 @@ export default async function SessionsPage({
   params: { userId: string };
 }) {
   const session = await useServerSession();
-  const sessions = await getChatSessions(params.userId, session, true);
+  const sessions = await chatSessions(params.userId, session, true);
 
   return (
     <>

@@ -4,7 +4,7 @@ import * as z from "zod";
 import prisma from "@/lib/prisma/prisma";
 import { ContactFormSchema } from "@/components/chatbox/ContactForm";
 import { ChatMessageType } from "@prisma/client";
-import { getUser } from "@/lib/prisma/getUsers";
+import { getUser } from "@/lib/prisma/queries/users";
 
 export async function contactSubmission(
   data: z.infer<typeof ContactFormSchema>,

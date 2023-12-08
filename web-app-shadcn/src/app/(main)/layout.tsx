@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import React from "react";
-import NavigationMenu from "@/components/NavigationMenu";
+import NavigationMenu from "@/components/navigation/NavigationMenu";
 import AuthProvider from "@/components/authentication/AuthProvider";
 import Link from "next/link";
 import { cn } from "@/lib/utils";

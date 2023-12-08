@@ -2,15 +2,18 @@ import {
   Table,
   TableBody,
   TableCaption,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUsersWithSessions } from "@/lib/prisma/getUsers";
+import { getUsersWithSessions } from "@/lib/prisma/queries/users";
 import { useServerSession } from "@/lib/authOptions";
 import UsersRows from "@/components/history/UsersRows";
 import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { ChevronRightCircle } from "lucide-react";
 
 export default async function HistoryPage() {
   const session = await useServerSession();
@@ -38,9 +41,6 @@ export default async function HistoryPage() {
             <TableHead className="w-[100px]">User ID</TableHead>
             <TableHead>Time Registered</TableHead>
             <TableHead>Time Updated</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Session Count</TableHead>
             <TableHead className="text-right">View User</TableHead>
           </TableRow>
         </TableHeader>
