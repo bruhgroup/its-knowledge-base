@@ -41,6 +41,9 @@ export default async function HistoryPage() {
             <TableHead className="w-[100px]">User ID</TableHead>
             <TableHead>Time Registered</TableHead>
             <TableHead>Time Updated</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Session Count</TableHead>
             <TableHead className="text-right">View User</TableHead>
           </TableRow>
         </TableHeader>

@@ -100,6 +100,7 @@ export async function getSessionElapsedTimes() {
     const firstMessageTime = session.chatMessages[0]?.createdAt;
 
     // Subquery to get the last message's createdAt for the session
+    // Not sure if it's possible to take ONLY first and last.
     const lastMessageTime = await prisma.chatMessage.findFirst({
       where: {
         chatSessionId: session.id,
