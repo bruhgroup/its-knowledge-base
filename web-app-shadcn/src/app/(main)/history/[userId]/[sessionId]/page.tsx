@@ -7,10 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getChatSessionMessages } from "@/lib/prisma/getChatSessions";
+import { getChatSessionMessages } from "@/lib/prisma/queries/chatSessions";
 import { useServerSession } from "@/lib/authOptions";
 import { MessageRatingEnum } from "@/lib/utils";
-import { UserRole } from "@prisma/client";
 import React from "react";
 import DirectoryNavigator from "@/components/history/DirectoryNavigator";
 

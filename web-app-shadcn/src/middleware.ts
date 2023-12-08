@@ -11,7 +11,7 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/history/:page*"],
+  matcher: ["/history/:page*", "/analytics/:page*"],
 };
 
 // https://github.com/nextauthjs/next-auth/discussions/4265#discussioncomment-7547821

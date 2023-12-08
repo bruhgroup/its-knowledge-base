@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
-import updateMessageRating from "@/lib/prisma/updateMessageRating";
+import { updateMessageRating } from "@/lib/prisma/queries/messageRating";
 import { MessageRatingEnum } from "@/lib/utils";
 
 export default function MessageRating({ id }: { id: string }) {

@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma/prisma";
 import { Session } from "next-auth";
 import { UserRole } from "@prisma/client";
 
-export async function getChatSessions(
+export async function chatSessions(
   user_id: string,
   session: Session | null,
   countMessages: boolean = false,
@@ -50,5 +50,31 @@ export async function getChatSessionMessages(
       },
     },
     orderBy: { createdAt: "asc" },
+  });
+}
+
+export async function getLatestQuestions(take: number) {
+  return prisma.chatMessage.findMany({
+    take,
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: {
+      type: "QUESTION",
+    },
+    select: {
+      createdAt: true,
+      message: true,
+      chatSession: {
+        select: {
+          id: true,
+          user: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
   });
 }
