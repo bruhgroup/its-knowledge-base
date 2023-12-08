@@ -78,3 +78,46 @@ export async function getLatestQuestions(take: number) {
     },
   });
 }
+
+export async function getSessionElapsedTimes() {
+  // Select every first message in each session.
+  const firstMessageInSessions = await prisma.chatSession.findMany({
+    select: {
+      id: true,
+      chatMessages: {
+        select: {
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+        take: 1,
+      },
+    },
+  });
+
+  const elapsedTime = firstMessageInSessions.map(async (session) => {
+    const firstMessageTime = session.chatMessages[0]?.createdAt;
+
+    // Subquery to get the last message's createdAt for the session
+    const lastMessageTime = await prisma.chatMessage.findFirst({
+      where: {
+        chatSessionId: session.id,
+      },
+      select: {
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // getTime() is in milliseconds, so convert it to seconds by dividing 1000.
+    return firstMessageTime && lastMessageTime?.createdAt
+      ? (lastMessageTime.createdAt.getTime() - firstMessageTime.getTime()) /
+          1000
+      : null;
+  });
+
+  return Promise.all(elapsedTime);
+}
