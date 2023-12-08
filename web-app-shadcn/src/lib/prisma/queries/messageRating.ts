@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma/prisma";
 import { MessageRatingEnum } from "@/lib/utils";
+import { ChatMessageType } from "@prisma/client";
 
 export async function updateMessageRating(
   message_id: string,
@@ -18,6 +19,7 @@ export async function statsMessageRatings() {
     by: ["rating"],
     _count: true,
     where: {
+      type: ChatMessageType.ANSWER,
       OR: [
         { rating: { in: [0, 1] } }, // messages with upvote or downvote
         { rating: null }, // messages with no votes
