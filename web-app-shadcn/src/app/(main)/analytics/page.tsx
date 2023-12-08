@@ -50,9 +50,9 @@ export default async function AnalyticsPage() {
   );
 
   // Sort the elapsed times in order
-  const sortedElapsedTimeKeys = Object.keys(accumulateElapsedTimes)
-    .map(Number)
-    .sort((a, b) => a - b);
+  const sortedElapsedTimeKeys = Object.keys(accumulateElapsedTimes).sort(
+    (a, b) => Number(a) - Number(b),
+  );
 
   return (
     <>
